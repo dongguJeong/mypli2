@@ -36,7 +36,7 @@ services:
       MYSQL_USER: app
       MYSQL_PASSWORD: app
     volumes:
-      - ./mysql-data:/var/lib/mysql
+      - /opt/homebrew/var/mysql:/var/lib/mysql
     ports:
       - "3306:3306"
 
