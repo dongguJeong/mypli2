@@ -1,0 +1,47 @@
+version: "3.9"
+
+services:
+  api:
+    build:
+      context: ../apps/api
+      dockerfile: Dockerfile
+    container_name: mypli_api
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env.dev
+    depends_on:
+      - db
+      - redis
+    command: pnpm run start:dev
+
+  web:
+    build:
+      context: ../apps/web
+      dockerfile: Dockerfile
+    container_name: mypli_web
+    ports:
+      - "8080:80"
+    env_file:
+      - .env.dev
+    depends_on:
+      - api
+
+  db:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: mypli
+      MYSQL_USER: app
+      MYSQL_PASSWORD: app
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  redis:
+    image: redis:7
+    container_name: redis
+    ports:
+      - "6379:6379"

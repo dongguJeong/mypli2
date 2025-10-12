@@ -1,0 +1,49 @@
+version: "3.9"
+
+services:
+  api:
+    build: ../apps/api
+    container_name: mypli_api
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - db
+      - redis
+    env_file:
+      - .env.dev # ✅ 환경 변수 로드
+    volumes:
+      - ../apps/api:/app
+    command: pnpm run start:dev
+
+  web:
+    build: ../apps/web
+    container_name: mypli_web
+    restart: always
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+    env_file:
+      - .env.dev # ✅ 동일하게 로드
+    volumes:
+      - ../apps/web:/app
+    command: pnpm run build && npx serve -s dist -l 80
+
+  db:
+    image: mysql:8.0
+    container_name: mypli_db
+    restart: always
+    env_file:
+      - .env.dev
+    volumes:
+      - /media/donggu/2e28166d-a0fd-47e4-a3f1-a0ca204bd763/mysql:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  redis:
+    image: redis:7
+    container_name: mypli_redis
+    restart: always
+    ports:
+      - "6379:6379"

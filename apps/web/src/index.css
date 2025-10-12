@@ -1,0 +1,59 @@
+@import "tailwindcss";
+
+:root {
+  font-family: Roboto, sans-serif;
+}
+
+a {
+  text-decoration: inherit;
+}
+
+* {
+  outline: none;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100vh;
+  font-family: Roboto, sans-serif;
+}
+
+#root {
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+}
+
+/* ✅ Tailwind 4.x 문법에 맞게 정리 */
+@theme {
+  --font-roboto: Roboto, sans-serif;
+  --color-black: #121212;
+  --color-primary: #9400ff;
+  --color-secondary: #121212;
+  --color-sidebar: #1d1d1d;
+  --color-gray: #d9d9d9;
+  --color-divider: #8e8e8e;
+
+  --spacing-sidelistTop: 71px;
+  --spacing-mainTop: 91px;
+  --spacing-mainLeft: 102px;
+
+  --animate-marquee: marquee 15s linear infinite;
+
+  --width-side-open: 220px;
+  --width-side-close: 96px;
+}
+
+/* ✅ @keyframes 문법 수정 (쉼표 제거, 따옴표 제거) */
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
+}
