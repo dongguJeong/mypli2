@@ -34,7 +34,6 @@ export class AuthService {
   }
 
   logout() {}
-
   async signup(signupDto: signupDto) {
     const exists = await this.users.findOneBy({ email: signupDto.email });
     if (exists) throw new ConflictException('이미 존재하는 이메일입니다.');

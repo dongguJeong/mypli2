@@ -63,7 +63,7 @@ async function bootstrap() {
   /** 🌐 CORS 설정 */
   app.enableCors({
     origin: 'http://localhost:8080',
-    credentials: true, // ✅ 쿠키 전송 허용
+    credentials: true,
   });
 
   await app.listen(process.env.PORT ?? 3000);

@@ -1,5 +1,13 @@
 // src/auth/auth.controller.ts
-import { Body, Controller, Get, Post, Req, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Req,
+  Res,
+  UnauthorizedException,
+} from '@nestjs/common';
 import type { Request, Response } from 'express';
 import { AuthService } from './auth.service';
 import { signupDto } from './dto/signup.dto';
@@ -29,5 +37,11 @@ export class AuthController {
     req.session.destroy(() => {});
     res.clearCookie('connect.sid');
     return { message: '로그아웃 성공' };
+  }
+
+  @Get('me')
+  me(@Req() req: Request) {
+    if (!req.session.user) throw new UnauthorizedException('로그인 필요');
+    return req.session.user;
   }
 }
