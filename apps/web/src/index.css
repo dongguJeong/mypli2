@@ -20,6 +20,7 @@ body {
   width: 100%;
   min-height: 100vh;
   font-family: Roboto, sans-serif;
+  background-color: black;
 }
 
 #root {
@@ -48,7 +49,6 @@ body {
   --width-side-close: 96px;
 }
 
-/* ✅ @keyframes 문법 수정 (쉼표 제거, 따옴표 제거) */
 @keyframes marquee {
   0% {
     transform: translateX(0);

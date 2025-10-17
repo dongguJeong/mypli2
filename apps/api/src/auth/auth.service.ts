@@ -8,6 +8,8 @@ import { User } from 'src/user/entity/user.entity';
 import { Repository } from 'typeorm';
 import { signupDto } from './dto/signup.dto';
 import bcrypt from 'bcrypt';
+import type { Request, Response } from 'express';
+import { promisify } from 'util';
 
 @Injectable()
 export class AuthService {
@@ -26,14 +28,12 @@ export class AuthService {
       throw new UnauthorizedException('비밀번호가 올바르지 않습니다.');
     }
 
-    const { password, ...userWithoutPassword } = user;
     return {
       message: '로그인 성공',
-      user: userWithoutPassword,
+      email: user.email,
     };
   }
 
-  logout() {}
   async signup(signupDto: signupDto) {
     const exists = await this.users.findOneBy({ email: signupDto.email });
     if (exists) throw new ConflictException('이미 존재하는 이메일입니다.');
@@ -50,6 +50,35 @@ export class AuthService {
     return {
       message: '회원가입 완료',
       email: savedUser.email,
+    };
+  }
+
+  async logout(req: Request, res: Response) {
+    const destroyAsync = promisify(req.session.destroy.bind(req.session));
+
+    await destroyAsync();
+    res.clearCookie('connect.sid');
+
+    return { message: '로그아웃 성공' };
+  }
+
+  status(req: Request) {
+    if (!req.session.user) {
+      throw new UnauthorizedException('로그인 상태가 아닙니다.');
+    }
+    return req.session.user;
+  }
+
+  async getProfile(id: number) {
+    const user = await this.users.findOne({
+      where: { id },
+      relations: ['playlists'],
+    });
+    if (!user) throw new UnauthorizedException('사용자를 찾을 수 없습니다.');
+    return {
+      email: user.email,
+      profile: user.profile,
+      playlists: user.playlists,
     };
   }
 }

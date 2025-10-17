@@ -6,12 +6,13 @@ import {
   Post,
   Req,
   Res,
-  UnauthorizedException,
+  UseGuards,
 } from '@nestjs/common';
 import type { Request, Response } from 'express';
 import { AuthService } from './auth.service';
 import { signupDto } from './dto/signup.dto';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
+import { SessionGuard } from './auth.guard';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -39,9 +40,16 @@ export class AuthController {
     return { message: '로그아웃 성공' };
   }
 
+  @Get('status')
+  status(@Req() req: Request) {
+    if (req.session.user) return { loggedIn: true };
+    return { loggedIn: false };
+  }
+
   @Get('me')
-  me(@Req() req: Request) {
-    if (!req.session.user) throw new UnauthorizedException('로그인 필요');
-    return req.session.user;
+  @UseGuards(SessionGuard)
+  async getProfile(@Req() req: Request) {
+    const user = await this.auth.getProfile(req.session.user!.id);
+    return user;
   }
 }

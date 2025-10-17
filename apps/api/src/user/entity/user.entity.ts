@@ -21,6 +21,9 @@ export class User {
   @CreateDateColumn()
   createdAt: Date;
 
+  @Column()
+  profile: string | null;
+
   @OneToMany(() => Playlist, (playlist) => playlist.user)
   playlists: Playlist[];
 }

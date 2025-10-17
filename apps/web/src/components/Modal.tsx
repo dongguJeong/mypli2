@@ -1,21 +1,22 @@
 import React from "react";
 import { IoCloseOutline } from "react-icons/io5";
+import { useModalStore, type ModalType } from "../store/modal-store";
 
-interface ModalProps {
-  isOpen: boolean;
-  onClose: () => void;
+export interface IModal {
   children: React.ReactNode;
+  type: ModalType;
   title?: string;
 }
 
-export function Modal({ isOpen, onClose, children, title }: ModalProps) {
-  if (!isOpen) return null;
+export function Modal({ type, children, title }: IModal) {
+  const { currentModal, closeModal } = useModalStore();
+  if (currentModal !== type) return null;
 
   return (
     <div className="z-100 fixed top-0 left-0 w-screen h-screen">
       <div
         className="w-full h-full  bg-black/50 flex items-center justify-center"
-        onClick={onClose}
+        onClick={closeModal}
       >
         <div
           className="bg-white rounded-xl p-4 shadow-xl"
@@ -30,7 +31,7 @@ export function Modal({ isOpen, onClose, children, title }: ModalProps) {
 
             <button
               className="hover:bg-gray rounded-full p-1 hover:text-black "
-              onClick={onClose}
+              onClick={closeModal}
             >
               <IoCloseOutline className="w-7 h-7" />
             </button>

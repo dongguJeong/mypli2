@@ -1,7 +1,4 @@
-import React, {
-  type ButtonHTMLAttributes,
-  type PropsWithChildren,
-} from "react";
+import { type ButtonHTMLAttributes, type PropsWithChildren } from "react";
 import { twMerge } from "tailwind-merge";
 
 interface IButton extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -18,6 +15,7 @@ export default function Button({
   color = "primary",
   ghost = false,
   buttonSize = "md",
+  disabled = false,
   children,
   ...props
 }: PropsWithChildren<IButton>) {
@@ -40,7 +38,9 @@ export default function Button({
          ${buttonSizeMap[buttonSize]} 
          cursor-pointer 
          ${border ? "border-2" : "border-transparent"} 
-         ${ghost ? "bg-transparent" : ""}`,
+         ${ghost ? "bg-transparent" : ""}
+         ${disabled ? "bg-gray-500 cursor-not-allowed" : ""},
+         `,
         className
       )}
       {...props}
