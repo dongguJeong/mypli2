@@ -1,18 +1,14 @@
-import {
-  useMutation,
-  useQueryClient,
-  useSuspenseQuery,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Auth } from "../api/auth";
 
 export function useAuth() {
   const queryClient = useQueryClient();
 
-  const status = useSuspenseQuery({
+  const status = useQuery({
     queryKey: ["status"],
     queryFn: async () => {
       const res = await Auth.status();
-      return res.data;
+      return res.data.user;
     },
     retry: false,
   });

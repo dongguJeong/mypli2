@@ -33,11 +33,11 @@ export default function Button({
   return (
     <button
       className={twMerge(
-        `rounded-xl 
+        `rounded-sm w-full h-full
          ${colorMap[color]} 
          ${buttonSizeMap[buttonSize]} 
          cursor-pointer 
-         ${border ? "border-2" : "border-transparent"} 
+         ${border ? "border-[1px]" : "border-transparent"} 
          ${ghost ? "bg-transparent" : ""}
          ${disabled ? "bg-gray-500 cursor-not-allowed" : ""},
          `,

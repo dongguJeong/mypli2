@@ -16,6 +16,9 @@ export class Playlist {
   @Column()
   title: string;
 
+  @Column()
+  coverImage: string | null;
+
   @ManyToOne(() => User, (user) => user.playlists, { onDelete: 'CASCADE' })
   user: User;
 

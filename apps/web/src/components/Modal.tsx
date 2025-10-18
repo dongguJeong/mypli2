@@ -13,7 +13,7 @@ export function Modal({ type, children, title }: IModal) {
   if (currentModal !== type) return null;
 
   return (
-    <div className="z-100 fixed top-0 left-0 w-screen h-screen">
+    <div className="z-999 fixed top-0 left-0 w-screen h-screen">
       <div
         className="w-full h-full  bg-black/50 flex items-center justify-center"
         onClick={closeModal}

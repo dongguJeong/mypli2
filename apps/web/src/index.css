@@ -8,11 +8,17 @@ a {
   text-decoration: inherit;
 }
 
-* {
-  outline: none;
+html,
+body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
 }
 
 html,
@@ -21,6 +27,10 @@ body {
   min-height: 100vh;
   font-family: Roboto, sans-serif;
   background-color: black;
+}
+
+a {
+  cursor: pointer;
 }
 
 #root {
@@ -39,14 +49,10 @@ body {
   --color-gray: #d9d9d9;
   --color-divider: #8e8e8e;
 
-  --spacing-sidelistTop: 71px;
-  --spacing-mainTop: 91px;
-  --spacing-mainLeft: 102px;
-
   --animate-marquee: marquee 15s linear infinite;
 
   --width-side-open: 220px;
-  --width-side-close: 96px;
+  --width-side-close: 5rem;
 }
 
 @keyframes marquee {

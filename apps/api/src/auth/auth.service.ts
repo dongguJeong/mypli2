@@ -1,6 +1,7 @@
 import {
   ConflictException,
   Injectable,
+  Res,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -62,11 +63,14 @@ export class AuthService {
     return { message: '로그아웃 성공' };
   }
 
-  status(req: Request) {
-    if (!req.session.user) {
-      throw new UnauthorizedException('로그인 상태가 아닙니다.');
+  status(req: Request, @Res() res: Response) {
+    const user = req.session.user;
+
+    if (user) {
+      return res.status(200).json({ user });
     }
-    return req.session.user;
+
+    return res.status(200).json({ user: null });
   }
 
   async getProfile(id: number) {
