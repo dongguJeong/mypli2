@@ -78,5 +78,5 @@ export class Song {
   externalIds: any; // spotifyId, appleId 등
 
   @OneToMany(() => PlaylistSong, (ps) => ps.song)
-  playlistItems: PlaylistSong[];
+  playlists: PlaylistSong[];
 }

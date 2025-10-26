@@ -8,6 +8,7 @@ html,
 body {
   margin: 0;
   padding: 0;
+  background-color: black;
 }
 
 :root {
@@ -44,7 +45,6 @@ a {
   --width-side-close: 96px;
 }
 
-/* ✅ @keyframes 문법 수정 (쉼표 제거, 따옴표 제거) */
 @keyframes marquee {
   0% {
     transform: translateX(0);

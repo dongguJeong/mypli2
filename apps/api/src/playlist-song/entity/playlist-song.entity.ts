@@ -14,11 +14,11 @@ export class PlaylistSong {
   @PrimaryGeneratedColumn('increment')
   id: number;
 
-  @ManyToOne(() => Playlist, (p) => p.id, { onDelete: 'CASCADE' })
+  @ManyToOne(() => Playlist, (p) => p.songs, { onDelete: 'CASCADE' })
   playlist: Playlist;
 
-  @ManyToOne(() => Song, (s) => s.id, {
-    eager: true,
+  @ManyToOne(() => Song, (s) => s.playlists, {
+    eager: false,
     onDelete: 'CASCADE',
   })
   song: Song;

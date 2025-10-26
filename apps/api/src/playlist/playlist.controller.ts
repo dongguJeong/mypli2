@@ -4,6 +4,7 @@ import {
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Patch,
   Post,
   Session,
@@ -28,44 +29,58 @@ export class PlaylistController {
 
   @Get()
   listMine(@Session() session: ExpressSession) {
-    return this.playlistService.listMine(+session.id); // auth user 기준
+    return this.playlistService.listMine(+session.id);
   }
 
   @Get(':id')
-  detail(@Param('id') id: string) {
-    return this.playlistService.detail(+id);
+  detail(@Param('id', ParseIntPipe) id: number) {
+    return this.playlistService.detail(id);
   }
 
   @Patch(':id')
   update(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: number,
     @Body() dto: UpdatePlaylistDto,
     @Session() session: ExpressSession,
   ) {
-    return this.playlistService.update(+id, dto, +session.id);
+    return this.playlistService.update(id, dto, +session.id);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string, @Session() session: ExpressSession) {
-    return this.playlistService.remove(+id, +session.id);
+  remove(
+    @Param('id', ParseIntPipe) id: number,
+    @Session() session: ExpressSession,
+  ) {
+    return this.playlistService.remove(id, +session.id);
   }
 
   @Post(':id/songs')
-  async addSong(@Param('id') id: string, @Body() dto: AddSongToPlaylistDto) {
+  async addSong(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() dto: AddSongToPlaylistDto,
+  ) {
     if (dto.songId) {
-      // 이미 분석된 곡(DB) 추가 → 즉시
-      return this.playlistService.addExistingSong(+id, dto.songId);
+      return this.playlistService.addExistingSong(id, dto.songId);
     }
     if (dto.source === 'youtube' && dto.videoId) {
-      // 파이프라인 트리거 → 비동기 큐(분석 후 자동 추가)
-      await this.playlistService.enqueueIngestFromYouTube(+id, dto.videoId);
+      await this.playlistService.enqueueIngestFromYouTube(id, dto.videoId);
       return { status: 'accepted' };
     }
     throw new Error('Invalid payload');
   }
 
   @Patch(':id/sort')
-  sort(@Param('id') id: string, @Body() dto: SortPlaylistDto) {
-    return this.playlistService.sort(+id, dto.orderedPlaylistSongIds);
+  sort(@Param('id', ParseIntPipe) id: number, @Body() dto: SortPlaylistDto) {
+    return this.playlistService.sort(id, dto.orderedPlaylistSongIds);
+  }
+
+  @Get('mostLiked')
+  mostLiked() {
+    return this.playlistService.mostLiked();
+  }
+
+  @Get('newes')
+  newest() {
+    return this.playlistService.newest();
   }
 }

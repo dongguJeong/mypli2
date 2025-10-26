@@ -1,9 +1,9 @@
-// apps/web/src/hooks/usePlaylist.ts
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Playlist } from "../api/playlist";
 
 export function usePlaylist() {
-  const qc = useQueryClient();
+  const queryClient = useQueryClient();
+
   const list = useQuery({
     queryKey: ["playlists"],
     queryFn: async () => (await Playlist.list()).data,
@@ -11,20 +11,25 @@ export function usePlaylist() {
 
   const create = useMutation({
     mutationFn: Playlist.create,
-    onSuccess: () => qc.invalidateQueries({ queryKey: ["playlists"] }),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["playlists"] }),
   });
 
-  const addSong = useMutation({
+  const update = useMutation({
     mutationFn: ({
-      playlistId,
-      payload,
+      id,
+      ...data
     }: {
-      playlistId: number;
-      payload: any;
-    }) => Playlist.addSong(playlistId, payload),
-    onSuccess: (_, vars) =>
-      qc.invalidateQueries({ queryKey: ["playlist", vars.playlistId] }),
+      id: number;
+      name?: string;
+      description?: string;
+    }) => Playlist.update(id, data),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["playlists"] }),
   });
 
-  return { list, create, addSong };
+  const remove = useMutation({
+    mutationFn: ({ id }: { id: number }) => Playlist.remove(id),
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["playlists"] }),
+  });
+
+  return { list, create, update, remove };
 }

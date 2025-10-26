@@ -1,16 +1,22 @@
-import { http } from "./http";
+import { ServerRequester } from "../requester/server";
+
+const playlist = new ServerRequester("/playlist");
 
 export const Playlist = {
   create: (data: { name: string; description?: string }) =>
-    http.post("/playlists", data),
-  list: () => http.get("/playlists"),
-  detail: (id: number) => http.get(`/playlists/${id}`),
-  update: (id: number, data: any) => http.patch(`/playlists/${id}`, data),
-  remove: (id: number) => http.delete(`/playlists/${id}`),
+    playlist.post("${base}", data),
+  list: () => playlist.get(""),
+  detail: (id: number) => playlist.get(`/${id}`),
+  update: (id: number, data: any) => playlist.patch(`/${id}`, data),
+  remove: (id: number) => playlist.delete(`/${id}`),
   addSong: (
     id: number,
     payload: { songId?: number; source?: "youtube"; videoId?: string }
-  ) => http.post(`/playlists/${id}/songs`, payload),
+  ) => playlist.post(`/${id}/songs`, payload),
   sort: (id: number, orderedIds: number[]) =>
-    http.patch(`/playlists/${id}/sort`, { orderedPlaylistSongIds: orderedIds }),
+    playlist.patch(`/${id}/sort`, {
+      orderedPlaylistSongIds: orderedIds,
+    }),
+  newest: () => playlist.get(`/newest`),
+  mostLiked: () => playlist.get(`/mostLiked`),
 };

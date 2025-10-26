@@ -32,7 +32,7 @@ export class PlaylistService {
     });
   }
 
-  async detail(id: number, userId?: number) {
+  async detail(id: number) {
     const playlist = await this.playlist.findOne({
       where: { id },
       relations: ['songs', 'songs.song', 'owner'],
@@ -40,8 +40,6 @@ export class PlaylistService {
     });
 
     if (!playlist) throw new NotFoundException('Playlist not found');
-    if (userId && playlist.owner.id !== userId)
-      throw new ForbiddenException('Not your playlist');
 
     return playlist;
   }
@@ -91,5 +89,25 @@ export class PlaylistService {
       orderedIds.map((id, idx) => this.ps.update({ id }, { position: idx })),
     );
     return { ok: true };
+  }
+
+  newest() {
+    return this.playlist.find({
+      order: { createdAt: 'DESC' },
+      take: 5,
+    });
+  }
+
+  async mostLiked() {
+    const result = await this.playlist
+      .createQueryBuilder('playlist')
+      .leftJoin('playlist.likes', 'like')
+      .loadRelationCountAndMap('playlist.likeCount', 'playlist.likes')
+      .orderBy('likeCount', 'DESC')
+      .addOrderBy('playlist.id', 'DESC') // 동점일 경우 최신순
+      .take(5)
+      .getMany();
+
+    return result;
   }
 }
