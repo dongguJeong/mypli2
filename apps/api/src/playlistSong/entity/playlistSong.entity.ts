@@ -1,7 +1,7 @@
 import { Playlist } from 'src/playlist/entity/playlist.entity';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
-@Entity()
+@Entity('playlist_song')
 export class PlaylistSong {
   @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
   id: number;

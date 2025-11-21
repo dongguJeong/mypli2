@@ -2,7 +2,7 @@ import { Playlist } from 'src/playlist/entity/playlist.entity';
 import { Users } from 'src/users/entity/users.entity';
 import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
 
-@Entity()
+@Entity('playlist_like')
 export class PlaylistLike {
   @PrimaryColumn({ type: 'int', unsigned: true, name: 'playlist_id' })
   playlistId: number;

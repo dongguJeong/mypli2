@@ -12,6 +12,7 @@ import { PlaylistBookmarkModule } from './playlistBookmark/PlaylistBookmark.modu
 import { PlaylistLikeModule } from './playlistLike/PlaylistLike.module';
 import { PlaylistSongModule } from './playlistSong/playlistSong.module';
 import { PlaylistLike } from './playlistLike/entity/playlistLike.entity';
+import { SearchModule } from './search/search.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { PlaylistLike } from './playlistLike/entity/playlistLike.entity';
     PlaylistBookmarkModule,
     PlaylistLikeModule,
     PlaylistSongModule,
+    SearchModule,
   ],
   controllers: [AppController],
   providers: [AppService],
