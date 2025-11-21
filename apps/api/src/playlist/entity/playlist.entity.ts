@@ -1,41 +1,58 @@
-import { LikePlaylist } from 'src/likePlaylist/entity/like-playlist.entity';
-import { PlaylistSong } from 'src/playlist-song/entity/playlist-song.entity';
-import { User } from 'src/user/entity/user.entity';
+import { PlaylistBookmark } from 'src/playlistBookmark/entity/playlistBookmark.entity';
+import { PlaylistLike } from 'src/playlistLike/entity/playlistLike.entity';
+import { PlaylistSong } from 'src/playlistSong/entity/playlistSong.entity';
+import { Users } from 'src/users/entity/users.entity';
 import {
   Entity,
-  PrimaryGeneratedColumn,
   Column,
-  OneToMany,
+  PrimaryGeneratedColumn,
   ManyToOne,
-  CreateDateColumn,
-  UpdateDateColumn,
+  OneToMany,
 } from 'typeorm';
 
 @Entity('playlist')
 export class Playlist {
-  @PrimaryGeneratedColumn('increment')
+  @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
   id: number;
 
-  @Column()
-  name: string;
+  @ManyToOne(() => Users, (user) => user.playlists, { onDelete: 'CASCADE' })
+  owner: Users;
 
-  @Column({ nullable: true })
-  description: string;
+  @Column({ length: 255 })
+  title: string;
 
-  @ManyToOne(() => User, (user) => user.playlists, {
-    onDelete: 'CASCADE',
+  @Column({ length: 500, nullable: true })
+  detail: string;
+
+  @Column({ length: 255, nullable: true, name: 'thumname_url' })
+  thumbnailUrl: string;
+
+  @Column({ type: 'boolean', name: 'is_public', default: false })
+  isPublic: boolean;
+
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    name: 'createdAt',
   })
-  owner: User;
+  created_at: Date;
 
-  @OneToMany(() => PlaylistSong, (ps) => ps.playlist, { cascade: true })
+  @OneToMany(() => PlaylistSong, (playlistSong) => playlistSong.playlist, {
+    cascade: true,
+  })
   songs: PlaylistSong[];
 
-  @OneToMany(() => LikePlaylist, (lp) => lp.playlist, { cascade: true })
-  likes: LikePlaylist[];
+  @OneToMany(() => PlaylistLike, (playlistLike) => playlistLike.playlist, {
+    cascade: true,
+  })
+  likes: PlaylistLike[];
 
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
+  @OneToMany(
+    () => PlaylistBookmark,
+    (playlistBookmark) => playlistBookmark.playlist,
+    {
+      cascade: true,
+    },
+  )
+  bookmarks: PlaylistBookmark[];
 }

@@ -12,6 +12,7 @@ export class BaseRequester<Req = unknown, Res = unknown, Body = unknown> {
     this.baseURL = baseURL;
     this.instance = axios.create({
       baseURL,
+      withCredentials: true,
       ...config,
     });
   }

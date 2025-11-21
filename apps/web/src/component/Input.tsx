@@ -1,7 +1,7 @@
 import { twMerge } from "tailwind-merge";
 
 interface IInput extends React.InputHTMLAttributes<HTMLInputElement> {
-  color: "primary" | "black" | "white";
+  color?: "primary" | "black" | "white";
   border?: boolean;
   ghost?: boolean;
   inputSize?: "sm" | "md" | "lg";
@@ -32,7 +32,7 @@ export default function Input({
 
   const colorMap = {
     primary: {
-      base: " text-primary",
+      base: "text-white placeholder::text-white",
       border: "border-primary/80 focus-within:border-primary",
     },
     black: {
@@ -56,7 +56,7 @@ export default function Input({
         border ? `border-2 ${colorMap[color].border}` : "border-transparent",
         ghost && "bg-transparent text-current",
         disabled && "bg-slate-500 text-white opacity-50 cursor-not-allowed",
-        error && "border-red border-2",
+        error && "border-red-500 focus-within:border-red-500 border-2",
         className
       )}
     >

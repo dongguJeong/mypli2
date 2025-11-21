@@ -4,9 +4,15 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import Button from "../Button";
 import Input from "../Input";
 import { useSidebarStore } from "../../store/sidebar-store";
+import { useModalStore } from "../../store/modal-store";
+import LoginModal from "../modals/LoginModal";
+import SignupModal from "../modals/SignupModal";
+import { useAuth } from "../../hook/useAuth";
 
 export default function Gnb() {
   const { toggleSidebar } = useSidebarStore();
+  const { open } = useModalStore();
+  const { user, logout } = useAuth();
 
   const navigate = useNavigate();
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -44,9 +50,23 @@ export default function Gnb() {
           className="border-t-0 border-r-0 border-l-0 "
         />
       </form>
-      <Button color="white" ghost>
-        로그인
+      <Button
+        color="white"
+        ghost
+        onClick={() => {
+          if (user) {
+            logout.mutateAsync();
+            navigate("/");
+          } else {
+            open("login");
+          }
+        }}
+      >
+        {user ? "로그아웃" : "로그인"}
       </Button>
+
+      <LoginModal />
+      <SignupModal />
     </nav>
   );
 }
