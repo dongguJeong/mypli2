@@ -1,16 +1,11 @@
-import {
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Session,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Controller, Delete, Get, Param, UseGuards } from '@nestjs/common';
 import { PlaylistBookmarkService } from './PlaylistBookmark.service';
-import type { Session as ExpressSession } from 'express-session';
 import { ParseIntPipe } from '@nestjs/common';
+import { SessionGuard } from 'src/auth/auth.guard';
+import { CurrentUser } from 'src/auth/auth.current-user.decorator';
 
 @Controller('bookmark')
+@UseGuards(SessionGuard)
 export class PlaylistBookmarkController {
   constructor(
     private readonly playlistBookmarkService: PlaylistBookmarkService,
@@ -18,26 +13,18 @@ export class PlaylistBookmarkController {
 
   @Get(':playlistId')
   addBookmark(
-    @Session() session: ExpressSession,
+    @CurrentUser() userId: number,
     @Param('playlistId', ParseIntPipe) playlistId: number,
   ) {
-    const userId = session.userId;
-    if (!userId) {
-      throw new UnauthorizedException('로그인이 필요합니다.');
-    }
     this.playlistBookmarkService.create(playlistId, userId);
     return { message: '북마크 추가', playlistId };
   }
 
   @Delete(':playlistId')
   deleteBookmark(
-    @Session() session: ExpressSession,
+    @CurrentUser() userId: number,
     @Param('playlistId', ParseIntPipe) playlistId: number,
   ) {
-    const userId = session.userId;
-    if (!userId) {
-      throw new UnauthorizedException('로그인이 필요합니다.');
-    }
     this.playlistBookmarkService.delete(playlistId, userId);
     return { message: '북마크 삭제', playlistId };
   }

@@ -1,10 +1,19 @@
-import { Body, Controller, Get, Post, Res, Session } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  Res,
+  Session,
+  UseGuards,
+} from '@nestjs/common';
 import type { Session as ExpressSession } from 'express-session';
 
 import type { Response } from 'express';
 import { AuthService } from './auth.service';
 import { SignupDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
+import { SessionGuard } from './auth.guard';
 
 @Controller('auth')
 export class AuthController {
@@ -27,13 +36,14 @@ export class AuthController {
 
   @Get('status')
   async status(@Session() session: ExpressSession) {
-    if (!session.id) return { loggedIn: false };
-    const user = await this.authService.getUserById(+session.id);
+    if (!session.userId) return { loggedIn: false };
+    const user = await this.authService.getUserById(+session.userId);
     if (!user) return { loggedIn: false };
     return { loggedIn: true, user: { id: user.id, email: user.email } };
   }
 
   @Post('logout')
+  @UseGuards(SessionGuard)
   logout(@Session() session: ExpressSession, @Res() res: Response) {
     session?.destroy?.((err: unknown) => {
       if (err instanceof Error) console.error(err.message);

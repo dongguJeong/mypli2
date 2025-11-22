@@ -27,15 +27,15 @@ export class Playlist {
   @Column({ length: 255, nullable: true, name: 'thumname_url' })
   thumbnailUrl: string;
 
-  @Column({ type: 'boolean', name: 'is_public', default: false })
+  @Column({ type: 'boolean', name: 'is_public', default: true })
   isPublic: boolean;
 
   @Column({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
-    name: 'createdAt',
+    name: 'created_at',
   })
-  created_at: Date;
+  createdAt: Date;
 
   @OneToMany(() => PlaylistSong, (playlistSong) => playlistSong.playlist, {
     cascade: true,

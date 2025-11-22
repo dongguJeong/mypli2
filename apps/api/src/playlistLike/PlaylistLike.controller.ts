@@ -1,41 +1,28 @@
-import {
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Session,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Controller, Delete, Get, Param, UseGuards } from '@nestjs/common';
 import { PlaylistLikeService } from './PlaylistLike.service';
-import type { Session as ExpressSession } from 'express-session';
 import { ParseIntPipe } from '@nestjs/common';
+import { SessionGuard } from 'src/auth/auth.guard';
+import { CurrentUser } from 'src/auth/auth.current-user.decorator';
 
 @Controller('like')
+@UseGuards(SessionGuard)
 export class PlaylistLikeController {
   constructor(private readonly playlistLikeService: PlaylistLikeService) {}
 
   @Get(':playlistId')
   addBookmark(
-    @Session() session: ExpressSession,
+    @CurrentUser() userId: number,
     @Param('playlistId', ParseIntPipe) playlistId: number,
   ) {
-    const userId = session.userId;
-    if (!userId) {
-      throw new UnauthorizedException('로그인이 필요합니다.');
-    }
     this.playlistLikeService.create(playlistId, userId);
     return { message: '좋아요 추가', playlistId };
   }
 
   @Delete(':playlistId')
   deleteBookmark(
-    @Session() session: ExpressSession,
+    @CurrentUser() userId: number,
     @Param('playlistId', ParseIntPipe) playlistId: number,
   ) {
-    const userId = session.userId;
-    if (!userId) {
-      throw new UnauthorizedException('로그인이 필요합니다.');
-    }
     this.playlistLikeService.delete(playlistId, userId);
     return { message: '좋아요 삭제', playlistId };
   }
