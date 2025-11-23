@@ -1,3 +1,4 @@
+import { IoClose } from "react-icons/io5";
 import { Auth } from "../../api/auth";
 import { useAlert } from "../../hook/useAlert";
 import { useModalStore } from "../../store/modal-store";
@@ -39,40 +40,56 @@ export default function SignupModal() {
   };
 
   return (
-    <Modal title="회원가입">
-      <div className="flex flex-col gap-10">
-        <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-4">
-          <Input
-            type="email"
-            className="rounded-sm"
-            error={!!errors.email}
-            placeholder="이메일"
-            {...register("email", { required: true })}
-          />
-
-          <Input
-            type="password"
-            className="rounded-sm"
-            error={!!errors.password}
-            placeholder="비밀번호"
-            {...register("password", { required: true, minLength: 4 })}
-          />
-
-          <Button>
-            <span className="flex-1 text-center font-semibold">회원가입</span>
+    <Modal>
+      <div
+        className="w-xl min-h-1/2 bg-[#212121] flex flex-col gap-6 p-8"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex justify-between items-center">
+          <span className="text-xl font-semibold">회원가입</span>
+          <Button ghost color="black" onClick={close} buttonSize="sm">
+            <IoClose className="w-6 h-6" />
           </Button>
-        </form>
-        <div className="w-full text-center text-sm">
-          <span>계정이 있으신가요? </span>
-          <span
-            className="cursor-pointer underline "
-            onClick={(e) => {
-              e.stopPropagation();
-              open("login");
-            }}
+        </div>
+        <div className="flex flex-col gap-10">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-4"
           >
-            로그인하러 가기
-          </span>
+            <Input
+              type="email"
+              inputSize="lg"
+              className="rounded-sm"
+              error={!!errors.email}
+              placeholder="이메일"
+              {...register("email", { required: true })}
+            />
+
+            <Input
+              type="password"
+              inputSize="lg"
+              className="rounded-sm"
+              error={!!errors.password}
+              placeholder="비밀번호"
+              {...register("password", { required: true, minLength: 4 })}
+            />
+
+            <Button buttonSize="lg">
+              <span className="flex-1 text-center font-semibold">회원가입</span>
+            </Button>
+          </form>
+          <div className="w-full text-center text-sm">
+            <span>계정이 있으신가요? </span>
+            <span
+              className="cursor-pointer underline "
+              onClick={(e) => {
+                e.stopPropagation();
+                open("login");
+              }}
+            >
+              로그인하러 가기
+            </span>
+          </div>
         </div>
       </div>
     </Modal>

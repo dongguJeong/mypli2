@@ -61,7 +61,7 @@ export default function Input({
       )}
     >
       {left && <span className="mr-2">{left}</span>}
-      <input {...props} disabled={disabled} className="outline-none" />
+      <input {...props} disabled={disabled} className="outline-none flex-1" />
       {right && <span className="ml-2">{right}</span>}
     </div>
   );

@@ -13,6 +13,10 @@ export const Auth = {
       "/signup",
       { email, password }
     ),
-  status: () => new ServerRequester("/auth").get("/status"),
+  status: () =>
+    new ServerRequester<
+      unknown,
+      { loggedIn: boolean; user?: { id: number; email: string } }
+    >("/auth").get("/status"),
   logout: () => new ServerRequester("/auth").get("/logout"),
 };

@@ -1,15 +1,23 @@
-import { Controller } from '@nestjs/common';
-import axios from 'axios';
+import { BadRequestException, Controller, Get, Query } from '@nestjs/common';
+import { SearchService } from './search.service';
 
 @Controller('search')
 export class searchController {
-  constructor() {}
+  constructor(private readonly searchService: SearchService) {}
 
-  async searchYoutube(q: string) {
-    const res = await axios.get(
-      `https://www.googleapis.com/youtube/v3/search?part=snippet&q=${q}&type=video&videoEmbeddable=true&maxResult=10`,
-    );
+  @Get('youtube')
+  async searchYoutube(@Query('q') q: string) {
+    if (!q?.trim()) {
+      throw new BadRequestException('검색어 q는 필수입니다.');
+    }
+    return this.searchService.searchYoutube(q);
+  }
 
-    return res;
+  @Get('playlist')
+  async searchPlaylist(@Query('q') q: string) {
+    if (!q?.trim()) {
+      throw new BadRequestException('검색어 q는 필수입니다.');
+    }
+    return this.searchService.searchPlaylist(q);
   }
 }

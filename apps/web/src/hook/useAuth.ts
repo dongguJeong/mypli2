@@ -26,17 +26,17 @@ export function useAuth() {
     },
   });
 
-  const { data: user, isLoading: isAuthLoading } = useQuery({
+  const { data: loggedIn, isLoading: isAuthLoading } = useQuery({
     queryKey: ["auth", "status"],
     queryFn: async () => {
       const res = await Auth.status();
-      return res.data.user ?? null;
+      return res.data.loggedIn;
     },
-    retry: false, // 세션 만료 시 에러를 계속 재시도하지 않음
+    retry: false,
   });
 
   return {
-    user,
+    loggedIn,
     login,
     logout,
     isAuthLoading,

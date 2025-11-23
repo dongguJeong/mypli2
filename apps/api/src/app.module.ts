@@ -1,6 +1,4 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { PlaylistModule } from './playlist/playlist.module';
 import { Users } from './users/entity/users.entity';
@@ -13,18 +11,32 @@ import { PlaylistLikeModule } from './playlistLike/PlaylistLike.module';
 import { PlaylistSongModule } from './playlistSong/playlistSong.module';
 import { PlaylistLike } from './playlistLike/entity/playlistLike.entity';
 import { SearchModule } from './search/search.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
-    TypeOrmModule.forRoot({
-      type: 'mysql',
-      host: process.env.DB_HOST,
-      port: 3306,
-      username: process.env.DB_USER,
-      password: process.env.DB_PASS,
-      database: process.env.DB_NAME,
-      entities: [Users, Playlist, PlaylistSong, PlaylistBookmark, PlaylistLike],
-      synchronize: true, // 개발 중에는 true (운영 시 false)
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
+    TypeOrmModule.forRootAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        type: 'mysql',
+        host: config.get('DB_HOST'),
+        port: 3306,
+        username: config.get('DB_USER'),
+        password: config.get('DB_PASS'),
+        database: config.get('DB_NAME'),
+        entities: [
+          Users,
+          Playlist,
+          PlaylistSong,
+          PlaylistBookmark,
+          PlaylistLike,
+        ],
+        synchronize: true, // 개발 중에는 true (운영 시 false)
+      }),
     }),
     AuthModule,
     PlaylistModule,
@@ -33,7 +45,5 @@ import { SearchModule } from './search/search.module';
     PlaylistSongModule,
     SearchModule,
   ],
-  controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule {}

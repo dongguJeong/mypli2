@@ -12,6 +12,7 @@ import { PlaylistBookmark } from 'src/playlistBookmark/entity/playlistBookmark.e
 import { PlaylistLike } from 'src/playlistLike/entity/playlistLike.entity';
 import { PlaylistSong } from 'src/playlistSong/entity/playlistSong.entity';
 import { PlaylistDetailDto } from './dto/detail.dto';
+import { PlaylistMostLikedDto } from './dto/mostLiked.dto';
 
 @Injectable()
 export class PlaylistService {
@@ -62,6 +63,41 @@ export class PlaylistService {
 
   async listMine(userId: number) {
     return this.playlistRepo.find({ where: { owner: { id: userId } } });
+  }
+
+  async getMostLikedPlaylist(limit = 5): Promise<Array<PlaylistMostLikedDto>> {
+    const rows = await this.playlistLikeRepo
+      .createQueryBuilder('like')
+      .leftJoin('like.playlist', 'playlist')
+      .select('playlist.id', 'id')
+      .addSelect('playlist.title', 'title')
+      .addSelect('playlist.detail', 'detail')
+      .addSelect('playlist.thumbnailUrl', 'thumbnailUrl')
+      .addSelect('COUNT(*)', 'likeCount')
+      .where('playlist.isPublic = :isPublic', { isPublic: true })
+      .groupBy('playlist.id')
+      .orderBy('likeCount', 'DESC')
+      .addOrderBy('playlist.id', 'ASC')
+      .limit(limit)
+      .getRawMany<PlaylistMostLikedDto>();
+
+    return rows.map((v) => ({
+      ...v,
+      likeCount: Number(v.likeCount),
+    }));
+  }
+
+  async getNewest(limit = 3) {
+    return this.playlistRepo.find({
+      where: {
+        isPublic: true, // 공개 목록만 보여주고 싶으면
+      },
+      order: {
+        createdAt: 'DESC', // 최신순
+      },
+      take: limit, // TOP 3
+      relations: ['owner'], // 필요하면 relations 추가
+    });
   }
 
   async getDetail(

@@ -29,8 +29,9 @@ export class AuthController {
   }
 
   @Post('login')
-  async login(@Body() dto: LoginDto) {
+  async login(@Body() dto: LoginDto, @Session() session: ExpressSession) {
     const user = await this.authService.validateUser(dto);
+    session.userId = user.id;
     return { message: '로그인 성공', user };
   }
 
@@ -42,7 +43,7 @@ export class AuthController {
     return { loggedIn: true, user: { id: user.id, email: user.email } };
   }
 
-  @Post('logout')
+  @Get('logout')
   @UseGuards(SessionGuard)
   logout(@Session() session: ExpressSession, @Res() res: Response) {
     session?.destroy?.((err: unknown) => {

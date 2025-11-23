@@ -1,7 +1,7 @@
 // store/modal-store.ts
 import { create } from "zustand";
 
-export type ModalType = "login" | "signup" | "profile" | null;
+export type ModalType = "login" | "signup" | "profile" | "youtubeSearch" | null;
 
 interface ModalStore {
   currentModal: ModalType;

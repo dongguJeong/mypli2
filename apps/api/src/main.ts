@@ -9,13 +9,13 @@ import { RedisStore } from 'connect-redis';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(process.env.PORT ?? 3000);
 
   const redisClient = createClient({
     socket: {
       host: process.env.REDIS_HOST || 'redis',
       port: Number(process.env.REDIS_PORT) || 6379,
     },
+    password: process.env.REDIS_PASSWORD,
   });
 
   redisClient.on('error', (err) => console.error('Redis Client Error', err));
@@ -62,5 +62,7 @@ async function bootstrap() {
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
+
+  await app.listen(process.env.PORT ?? 3000);
 }
 bootstrap();

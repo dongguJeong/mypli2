@@ -57,4 +57,14 @@ export class PlaylistController {
     const userId = session?.userId ?? null;
     return this.playlistService.getDetail(playlistId, userId);
   }
+
+  @Get('mostLike')
+  getMostLike() {
+    return this.playlistService.getMostLikedPlaylist(3);
+  }
+
+  @Get('newest')
+  getNewest() {
+    return this.playlistService.getNewest(5);
+  }
 }

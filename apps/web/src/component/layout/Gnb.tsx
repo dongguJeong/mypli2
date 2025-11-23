@@ -12,7 +12,7 @@ import { useAuth } from "../../hook/useAuth";
 export default function Gnb() {
   const { toggleSidebar } = useSidebarStore();
   const { open } = useModalStore();
-  const { user, logout } = useAuth();
+  const { loggedIn, logout } = useAuth();
 
   const navigate = useNavigate();
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -54,7 +54,7 @@ export default function Gnb() {
         color="white"
         ghost
         onClick={() => {
-          if (user) {
+          if (loggedIn) {
             logout.mutateAsync();
             navigate("/");
           } else {
@@ -62,7 +62,7 @@ export default function Gnb() {
           }
         }}
       >
-        {user ? "로그아웃" : "로그인"}
+        {loggedIn ? "로그아웃" : "로그인"}
       </Button>
 
       <LoginModal />
