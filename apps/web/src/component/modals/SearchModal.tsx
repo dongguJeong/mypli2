@@ -6,10 +6,12 @@ import { useModalStore } from "../../store/modal-store";
 import { useSearch } from "../../hook/useSearch";
 import Button from "../Button";
 import { IoClose } from "react-icons/io5";
+import { usePlaylistDetail } from "../../hook/usePlaylistDetail";
 
 export default function SearchModal() {
   const { register, handleSubmit, reset } = useForm<{ q: string }>();
-  const { currentModal, close } = useModalStore();
+  const { currentModal, modalData, close } = useModalStore();
+  const { addSong } = usePlaylistDetail(modalData);
   const [query, setQuery] = useState("");
   const [previewId, setPreviewId] = useState<string | null>(null);
 
@@ -31,6 +33,20 @@ export default function SearchModal() {
 
   function togglePreview(id: string) {
     setPreviewId((prev) => (prev === id ? null : id));
+  }
+
+  function clickAddSong(v) {
+    console.log(modalData);
+    if (!modalData) return;
+    const data = {
+      youtubeUrl: `https://www.youtube.com/embed/${v.id.videoId}?autoplay=1`,
+      title: v.snippet.title,
+      singer: "",
+      songThumnail: v.snippet.thumbnails.default.url,
+      orderIndex: 0,
+      playlistId: modalData,
+    };
+    addSong.mutateAsync(data);
   }
 
   return (
@@ -75,7 +91,7 @@ export default function SearchModal() {
                   className="justify-center justify-self-end"
                   onClick={(e) => {
                     e.stopPropagation();
-                    console.log(v.id.videoId);
+                    clickAddSong(v);
                   }}
                 >
                   추가하기

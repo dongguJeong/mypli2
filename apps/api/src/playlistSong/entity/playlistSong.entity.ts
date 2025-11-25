@@ -11,6 +11,9 @@ export class PlaylistSong {
   })
   playlist: Playlist;
 
+  @Column({ length: 500 })
+  title: string;
+
   @Column({ length: 500, name: 'youtube_url' })
   youtubeUrl: string;
 

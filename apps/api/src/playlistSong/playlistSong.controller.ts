@@ -1,7 +1,14 @@
-import { Body, Controller, Delete, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  ParseIntPipe,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { PlaylistSongService } from './playlistSong.service';
 import { AddPlaylistSong } from './dto/addPlaylistSong.dto';
-import { DeletePlaylistSong } from './dto/deletePlaylistSong.dto';
 import { SessionGuard } from 'src/auth/auth.guard';
 import { CurrentUser } from 'src/auth/auth.current-user.decorator';
 
@@ -12,14 +19,14 @@ export class PlaylistSongController {
 
   @Post()
   addSong(@Body() addSongdto: AddPlaylistSong, @CurrentUser() userId: number) {
-    this.playlistSongService.addSong(addSongdto, userId);
+    return this.playlistSongService.addSong(addSongdto, userId);
   }
 
   @Delete()
   deleteSong(
-    @Body() deleteSongdto: DeletePlaylistSong,
+    @Query('songId', ParseIntPipe) songId: number,
     @CurrentUser() userId: number,
   ) {
-    this.playlistSongService.deleteSong(deleteSongdto, userId);
+    return this.playlistSongService.deleteSong(songId, userId);
   }
 }

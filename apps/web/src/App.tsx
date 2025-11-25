@@ -5,7 +5,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Search from "./page/Search";
 import Bookmark from "./page/Bookmark";
 import Myplaylist from "./page/MyPlaylist";
-import Create from "./page/create";
 import Playlist from "./page/Playlist";
 
 const routeList = [
@@ -24,10 +23,6 @@ const routeList = [
   {
     path: "/mypli",
     element: <Myplaylist />,
-  },
-  {
-    path: "/create",
-    element: <Create />,
   },
   {
     path: "/playlist/:id",

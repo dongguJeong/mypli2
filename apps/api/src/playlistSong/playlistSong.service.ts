@@ -8,8 +8,6 @@ import { PlaylistSong } from './entity/playlistSong.entity';
 import { Repository } from 'typeorm';
 import { AddPlaylistSong } from './dto/addPlaylistSong.dto';
 import { Playlist } from 'src/playlist/entity/playlist.entity';
-import { DeletePlaylistSong } from './dto/deletePlaylistSong.dto';
-
 @Injectable()
 export class PlaylistSongService {
   constructor(
@@ -37,21 +35,33 @@ export class PlaylistSongService {
       playlist: { id: dto.playlistId },
     });
 
-    return this.playlistSongRepo.save(newPlaylistSong);
-  }
+    this.playlistSongRepo.save(newPlaylistSong);
 
-  async deleteSong(dto: DeletePlaylistSong, userId: number) {
-    const playlist = await this.playlistRepo.findOne({
-      where: { id: dto.songId },
-      relations: ['owner'],
+    const firstSong = await this.playlistSongRepo.findOne({
+      where: { playlist: { id: dto.playlistId } },
+      order: { orderIndex: 'ASC' },
     });
 
-    if (!playlist) {
-      throw new NotFoundException('Playlist not found');
+    if (firstSong) {
+      playlist.thumbnailUrl = firstSong.songThumnail;
+      await this.playlistRepo.save(playlist);
+    }
+    return { id: playlist.id, songId: newPlaylistSong.id };
+  }
+
+  async deleteSong(songId: number, userId: number) {
+    const song = await this.playlistSongRepo.findOne({
+      where: { id: songId },
+      relations: ['playlist', 'playlist.owner'],
+    });
+
+    if (!song) {
+      throw new NotFoundException('Song not found');
     }
 
-    if (playlist.owner.id !== userId) throw new UnauthorizedException();
+    if (song.playlist.owner.id !== userId) throw new UnauthorizedException();
 
-    return this.playlistSongRepo.delete({ id: dto.songId });
+    this.playlistSongRepo.delete({ id: songId });
+    return { songId: songId };
   }
 }

@@ -36,6 +36,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
           PlaylistLike,
         ],
         synchronize: true, // 개발 중에는 true (운영 시 false)
+        charset: 'utf8mb4',
       }),
     }),
     AuthModule,

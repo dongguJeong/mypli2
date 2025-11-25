@@ -6,7 +6,6 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Playlist } from './entity/playlist.entity';
 import { Repository } from 'typeorm';
-import { CreatePlaylistDto } from './dto/create.dto';
 import { UpdatePlaylistDto } from './dto/update.dto';
 import { PlaylistBookmark } from 'src/playlistBookmark/entity/playlistBookmark.entity';
 import { PlaylistLike } from 'src/playlistLike/entity/playlistLike.entity';
@@ -26,12 +25,13 @@ export class PlaylistService {
     private playlistSongRepo: Repository<PlaylistSong>,
   ) {}
 
-  async create(dto: CreatePlaylistDto, userId: number) {
+  async create(userId: number) {
     const playlist = this.playlistRepo.create({
-      ...dto,
+      title: '새 플레이리스트',
       owner: { id: userId },
     });
-    return this.playlistRepo.save(playlist);
+    await this.playlistRepo.save(playlist);
+    return { id: playlist.id };
   }
 
   async delete(playlistId: number, userId: number) {
@@ -44,7 +44,7 @@ export class PlaylistService {
       throw new NotFoundException('Playlist not found or not owned by you');
     }
 
-    return { success: true };
+    return { id: playlistId };
   }
 
   async update(playlistId: number, userId: number, dto: UpdatePlaylistDto) {
@@ -58,11 +58,15 @@ export class PlaylistService {
       throw new ForbiddenException('You cannot edit this playlist');
 
     Object.assign(playlist, dto);
-    return this.playlistRepo.save(playlist);
+    await this.playlistRepo.save(playlist);
+    return { id: playlistId };
   }
 
   async listMine(userId: number) {
-    return this.playlistRepo.find({ where: { owner: { id: userId } } });
+    return this.playlistRepo.find({
+      select: ['id', 'title', 'thumbnailUrl'],
+      where: { owner: { id: userId } },
+    });
   }
 
   async getMostLikedPlaylist(limit = 5): Promise<Array<PlaylistMostLikedDto>> {
@@ -89,6 +93,7 @@ export class PlaylistService {
 
   async getNewest(limit = 3) {
     return this.playlistRepo.find({
+      select: ['id', 'title', 'thumbnailUrl', 'createdAt'],
       where: {
         isPublic: true, // 공개 목록만 보여주고 싶으면
       },
@@ -155,8 +160,9 @@ export class PlaylistService {
       },
       songs: playlistSongs.map((song) => ({
         id: song.id,
+        title: song.title,
         youtubeUrl: song.youtubeUrl,
-        singer: song.singer,
+
         songThumnail: song.songThumnail,
         orderIndex: song.orderIndex,
       })),

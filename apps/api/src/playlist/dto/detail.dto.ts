@@ -14,7 +14,7 @@ export class PlaylistDetailDto {
   songs: Array<{
     id: number;
     youtubeUrl: string;
-    singer: string;
+    title: string;
     songThumnail: string | null;
     orderIndex: number;
   }>;
