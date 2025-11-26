@@ -1,4 +1,4 @@
-export class PlaylistDetailDto {
+export class PlaylistDetailResponse {
   playlist: {
     id: number;
     title: string;
@@ -16,7 +16,8 @@ export class PlaylistDetailDto {
     youtubeUrl: string;
     title: string;
     songThumnail: string | null;
-    orderIndex: number;
+    artist: string;
+    duration: string;
   }>;
 
   isLiked: boolean;

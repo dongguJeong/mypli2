@@ -1,6 +1,6 @@
 import { IsNumber } from 'class-validator';
 
-export class DeletePlaylistSong {
+export class DeleteReportDto {
   @IsNumber()
-  songId: number;
+  reportId: number;
 }

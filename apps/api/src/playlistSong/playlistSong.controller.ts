@@ -2,31 +2,34 @@ import {
   Body,
   Controller,
   Delete,
-  ParseIntPipe,
+  Param,
   Post,
-  Query,
   UseGuards,
 } from '@nestjs/common';
 import { PlaylistSongService } from './playlistSong.service';
-import { AddPlaylistSong } from './dto/addPlaylistSong.dto';
+import { AddPlaylistSong } from './dto/add-playlistSong.dto';
 import { SessionGuard } from 'src/auth/auth.guard';
 import { CurrentUser } from 'src/auth/auth.current-user.decorator';
+import { DeletePlaylistSongParamsDto } from './dto/delete-PlaylistSong.dto';
 
-@Controller('song')
+@Controller('playlistSong')
 @UseGuards(SessionGuard)
 export class PlaylistSongController {
   constructor(private readonly playlistSongService: PlaylistSongService) {}
 
   @Post()
-  addSong(@Body() addSongdto: AddPlaylistSong, @CurrentUser() userId: number) {
-    return this.playlistSongService.addSong(addSongdto, userId);
-  }
-
-  @Delete()
-  deleteSong(
-    @Query('songId', ParseIntPipe) songId: number,
+  addPlaylistSong(
+    @Body() addSongdto: AddPlaylistSong,
     @CurrentUser() userId: number,
   ) {
-    return this.playlistSongService.deleteSong(songId, userId);
+    return this.playlistSongService.addPlaylistSong(addSongdto, userId);
+  }
+
+  @Delete(':playlistId/songs/:songId')
+  deletePlaylistSong(
+    @Param() params: DeletePlaylistSongParamsDto,
+    @CurrentUser() userId: number,
+  ) {
+    return this.playlistSongService.deletePlaylistSong(params, userId);
   }
 }

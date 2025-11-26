@@ -12,6 +12,9 @@ import { PlaylistSongModule } from './playlistSong/playlistSong.module';
 import { PlaylistLike } from './playlistLike/entity/playlistLike.entity';
 import { SearchModule } from './search/search.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { SongModule } from './song/song.module';
+import { ReportModule } from './report/report.module';
+import { RecommendModule } from './recommend/recommend.module';
 
 @Module({
   imports: [
@@ -45,6 +48,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     PlaylistLikeModule,
     PlaylistSongModule,
     SearchModule,
+    SongModule,
+    ReportModule,
+    RecommendModule,
   ],
 })
 export class AppModule {}

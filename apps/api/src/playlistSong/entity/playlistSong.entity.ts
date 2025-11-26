@@ -1,5 +1,6 @@
 import { Playlist } from 'src/playlist/entity/playlist.entity';
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Song } from 'src/song/entity/song.entity';
+import { Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
 @Entity('playlist_song')
 export class PlaylistSong {
@@ -11,18 +12,8 @@ export class PlaylistSong {
   })
   playlist: Playlist;
 
-  @Column({ length: 500 })
-  title: string;
-
-  @Column({ length: 500, name: 'youtube_url' })
-  youtubeUrl: string;
-
-  @Column({ length: 255 })
-  singer: string;
-
-  @Column({ length: 255, nullable: true, name: 'song_thumnail' })
-  songThumnail: string;
-
-  @Column({ name: 'order_index', default: 0 })
-  orderIndex: number;
+  @ManyToOne(() => Song, (song) => song.playlists, {
+    onDelete: 'CASCADE',
+  })
+  song: Song;
 }

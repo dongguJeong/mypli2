@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { PlaylistService } from './playlist.service';
 import { CurrentUser } from 'src/auth/auth.current-user.decorator';
-import { UpdatePlaylistDto } from './dto/update.dto';
+import { UpdatePlaylistDto } from './dto/update-playlist.dto';
 import type { Session as ExpressSession } from 'express-session';
 
 @Controller('playlist')
@@ -43,13 +43,11 @@ export class PlaylistController {
     return this.playlistService.getDetail(playlistId, userId);
   }
 
-  // === POST 라우트 (순서 무관) ===
   @Post()
   createPlaylist(@CurrentUser(ParseIntPipe) userId: number) {
     return this.playlistService.create(userId);
   }
 
-  // === PATCH 라우트 (순서 무관) ===
   @Patch(':playlistId')
   updatePlaylist(
     @Param('playlistId', ParseIntPipe) playlistId: number,
@@ -59,7 +57,6 @@ export class PlaylistController {
     return this.playlistService.update(playlistId, userId, updatePlaylistDto);
   }
 
-  // === DELETE 라우트 (순서 무관) ===
   @Delete(':playlistId')
   deletePlaylist(
     @Param('playlistId', ParseIntPipe) playlistId: number,

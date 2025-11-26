@@ -7,6 +7,7 @@ import { PlaylistBookmark } from 'src/playlistBookmark/entity/playlistBookmark.e
 import { PlaylistSong } from 'src/playlistSong/entity/playlistSong.entity';
 import { PlaylistLike } from 'src/playlistLike/entity/playlistLike.entity';
 import { PlaylistController } from './playlist.controller';
+import { Song } from 'src/song/entity/song.entity';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { PlaylistController } from './playlist.controller';
       PlaylistBookmark,
       PlaylistSong,
       PlaylistLike,
+      Song,
     ]),
     AuthModule,
   ],

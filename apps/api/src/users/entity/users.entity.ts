@@ -1,6 +1,7 @@
 import { Playlist } from 'src/playlist/entity/playlist.entity';
 import { PlaylistBookmark } from 'src/playlistBookmark/entity/playlistBookmark.entity';
 import { PlaylistLike } from 'src/playlistLike/entity/playlistLike.entity';
+import { Recommend } from 'src/recommend/entity/recommend.entity';
 import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity('users')
@@ -43,4 +44,7 @@ export class Users {
     },
   )
   bookmarks: PlaylistBookmark[];
+
+  @OneToMany(() => Recommend, (recommend) => recommend.song, { cascade: true })
+  recommends: Recommend[];
 }

@@ -6,12 +6,12 @@ import {
 import { InjectRepository } from '@nestjs/typeorm';
 import { Playlist } from './entity/playlist.entity';
 import { Repository } from 'typeorm';
-import { UpdatePlaylistDto } from './dto/update.dto';
+import { UpdatePlaylistDto } from './dto/update-playlist.dto';
 import { PlaylistBookmark } from 'src/playlistBookmark/entity/playlistBookmark.entity';
 import { PlaylistLike } from 'src/playlistLike/entity/playlistLike.entity';
 import { PlaylistSong } from 'src/playlistSong/entity/playlistSong.entity';
-import { PlaylistDetailDto } from './dto/detail.dto';
-import { PlaylistMostLikedDto } from './dto/mostLiked.dto';
+import { PlaylistMostLikedDto } from './dto/most-liked.dto';
+import { PlaylistDetailResponse } from './response/playlistDetilResponse';
 
 @Injectable()
 export class PlaylistService {
@@ -95,20 +95,20 @@ export class PlaylistService {
     return this.playlistRepo.find({
       select: ['id', 'title', 'thumbnailUrl', 'createdAt'],
       where: {
-        isPublic: true, // 공개 목록만 보여주고 싶으면
+        isPublic: true,
       },
       order: {
-        createdAt: 'DESC', // 최신순
+        createdAt: 'DESC',
       },
-      take: limit, // TOP 3
-      relations: ['owner'], // 필요하면 relations 추가
+      take: limit,
+      relations: ['owner'],
     });
   }
 
   async getDetail(
     playlistId: number,
     userId: number | null,
-  ): Promise<PlaylistDetailDto> {
+  ): Promise<PlaylistDetailResponse> {
     const playlist = await this.playlistRepo.findOne({
       where: { id: playlistId },
       relations: ['owner'],
@@ -125,7 +125,7 @@ export class PlaylistService {
 
     const playlistSongs = await this.playlistSongRepo.find({
       where: { playlist: { id: playlistId } },
-      order: { orderIndex: 'ASC' },
+      relations: ['song'],
     });
 
     let isLiked = false;
@@ -158,13 +158,13 @@ export class PlaylistService {
         id: playlist.owner.id,
         username: playlist.owner.username,
       },
-      songs: playlistSongs.map((song) => ({
-        id: song.id,
-        title: song.title,
-        youtubeUrl: song.youtubeUrl,
-
-        songThumnail: song.songThumnail,
-        orderIndex: song.orderIndex,
+      songs: playlistSongs.map((v) => ({
+        id: v.song.id,
+        title: v.song.title,
+        artist: v.song.artist,
+        youtubeUrl: v.song.youtubeUrl,
+        songThumnail: v.song.songThumnail,
+        duration: v.song.duration,
       })),
       isLiked,
       isBookmarked,
