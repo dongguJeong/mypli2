@@ -1,4 +1,11 @@
-import { Controller, Delete, Get, Param, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { PlaylistBookmarkService } from './PlaylistBookmark.service';
 import { ParseIntPipe } from '@nestjs/common';
 import { SessionGuard } from 'src/auth/auth.guard';
@@ -11,7 +18,12 @@ export class PlaylistBookmarkController {
     private readonly playlistBookmarkService: PlaylistBookmarkService,
   ) {}
 
-  @Get(':playlistId')
+  @Get('list')
+  getBookmark(@CurrentUser() userId: number) {
+    return this.playlistBookmarkService.getBookmarkList(userId);
+  }
+
+  @Post(':playlistId')
   addBookmark(
     @CurrentUser() userId: number,
     @Param('playlistId', ParseIntPipe) playlistId: number,

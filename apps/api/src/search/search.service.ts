@@ -14,7 +14,6 @@ export class SearchService {
   ) {}
 
   async searchYoutube(q: string): Promise<YoutubeSearchItem[]> {
-    // 1) 검색 API 호출
     const searchRes = await axios.get<YoutubeSearchResponse>(
       'https://www.googleapis.com/youtube/v3/search',
       {

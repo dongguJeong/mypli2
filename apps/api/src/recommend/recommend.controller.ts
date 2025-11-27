@@ -2,10 +2,12 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
   ParseIntPipe,
   Patch,
   Post,
+  Query,
   UseGuards,
 } from '@nestjs/common';
 import { RecommendService } from './recommend.service';
@@ -44,5 +46,10 @@ export class RecommendController {
     @Body() dto: UpdateRecommendDto,
   ) {
     return this.recommendService.updateRecommend(dto, userId, recommendId);
+  }
+
+  @Get('list')
+  getRecommends(@Query('limit') limit: number) {
+    return this.recommendService.getRecommends(limit);
   }
 }

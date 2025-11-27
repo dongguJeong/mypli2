@@ -8,7 +8,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Recommend } from './entity/recommend.entity';
 import { Repository } from 'typeorm';
 import { CreateRecommendDto } from './dto/createRecommend.dto';
-import { DeleteRecommendDto } from './dto/deleteRecommend.dto';
 import { UpdateRecommendDto } from './dto/updateRecomend.dto';
 
 @Injectable()
@@ -38,6 +37,7 @@ export class RecommendService {
     }
 
     await this.recommendRepo.delete({ id: recommendId });
+    return { id: recommend.id };
   }
 
   async updateRecommend(
@@ -70,5 +70,31 @@ export class RecommendService {
       where: { id: recommendId },
       relations: ['song', 'user'],
     });
+  }
+
+  async getRecommends(limit = 3) {
+    const recommends = await this.recommendRepo.find({
+      relations: ['song', 'user'],
+      take: limit,
+      order: { createdAt: 'DESC' }, // 최신순
+    });
+
+    return recommends.map((recommend) => ({
+      id: recommend.id,
+      description: recommend.description,
+      createdAt: recommend.createdAt,
+      song: {
+        id: recommend.song.id,
+        title: recommend.song.title,
+        artist: recommend.song.artist,
+        youtubeUrl: recommend.song.youtubeUrl,
+        thumbnailUrl: recommend.song.songThumnail,
+        duration: recommend.song.duration,
+      },
+      recommendedBy: {
+        id: recommend.user.id,
+        username: recommend.user.username,
+      },
+    }));
   }
 }

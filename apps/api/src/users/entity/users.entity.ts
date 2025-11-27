@@ -18,9 +18,6 @@ export class Users {
   @Column({ length: 255, name: 'password_hash' })
   passwordHash: string;
 
-  @Column({ length: 255, nullable: true, name: 'profile_image' })
-  profileImage: string;
-
   @Column({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',

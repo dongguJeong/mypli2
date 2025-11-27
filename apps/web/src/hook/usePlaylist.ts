@@ -1,13 +1,13 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Playlist } from "../api/playlist";
-import type { PlaylistUpdateBody } from "../model/playlist";
+import type { IUpdatePlaylist } from "../model/playlist";
 
 export function usePlaylist() {
   const queryClient = useQueryClient();
 
-  const myPlaylist = useQuery({
+  const { data: myPlaylist } = useQuery({
     queryKey: ["playlists"],
-    queryFn: async () => (await Playlist.list()).data,
+    queryFn: async () => (await Playlist.myplaylist()).data,
   });
 
   const create = useMutation({
@@ -17,27 +17,27 @@ export function usePlaylist() {
   });
 
   const update = useMutation({
-    mutationFn: ({ id, data }: { id: number; data: PlaylistUpdateBody }) =>
+    mutationFn: ({ id, data }: { id: number; data: IUpdatePlaylist }) =>
       Playlist.update(id, data),
     onSuccess: async () =>
       await queryClient.invalidateQueries({ queryKey: ["playlists"] }),
   });
 
-  const remove = useMutation({
-    mutationFn: ({ id }: { id: number }) => Playlist.remove(id),
+  const deletePlaylist = useMutation({
+    mutationFn: ({ id }: { id: number }) => Playlist.delete(id),
     onSuccess: async () =>
       await queryClient.invalidateQueries({ queryKey: ["playlists"] }),
   });
 
-  const newest = useQuery({
+  const { data: newest } = useQuery({
     queryKey: ["newest"],
     queryFn: async () => (await Playlist.newest()).data,
   });
 
-  const mostLiked = useQuery({
+  const { data: mostLiked } = useQuery({
     queryKey: ["mostLiked"],
     queryFn: async () => (await Playlist.mostLiked()).data,
   });
 
-  return { myPlaylist, create, update, remove, newest, mostLiked };
+  return { myPlaylist, create, update, deletePlaylist, newest, mostLiked };
 }

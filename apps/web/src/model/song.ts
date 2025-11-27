@@ -1,21 +1,15 @@
-export interface SongAddResponse {
+export interface ISong {
   id: number;
-  songId: number;
-}
-
-export interface SongDeleteResponse {
-  songId: number;
-}
-
-export interface IAddSong {
   youtubeUrl: string;
   title: string;
-  singer: string;
+  artist: string;
   songThumnail: string;
-  orderIndex: number;
-  playlistId: number;
+  duration: string;
 }
 
-export interface IDeleteSong {
-  songId: number;
+export interface INormalizeYoutubeVideo {
+  title: string;
+  youtubeUrl: string;
+  songThumnail: string;
+  videoId: string;
 }

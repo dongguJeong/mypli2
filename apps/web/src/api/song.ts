@@ -1,19 +1,15 @@
-import type {
-  IAddSong,
-  IDeleteSong,
-  SongAddResponse,
-  SongDeleteResponse,
-} from "../model/song";
+import type { INormalizeYoutubeVideo, ISong } from "../model/song";
 import { ServerRequester } from "../requester/server";
 
 export const Song = {
-  addSong: (data: IAddSong) =>
-    new ServerRequester<unknown, SongAddResponse, IAddSong>("/song").post(
-      "",
-      data
-    ),
-  deleteSong: (data: IDeleteSong) =>
-    new ServerRequester<unknown, SongDeleteResponse, IDeleteSong>(
-      "/song"
-    ).delete("", data),
+  createSong: (data: ISong) =>
+    new ServerRequester<Omit<ISong, "id">, ISong>("/song").post(data),
+
+  deleteSong: (songId: number) =>
+    new ServerRequester<Pick<ISong, "id">, Pick<ISong, "id">>(
+      `/song/${songId}`
+    ).delete(),
+
+  normalizeYoutubeVideo: (data: INormalizeYoutubeVideo) =>
+    new ServerRequester("song/normalize").post(data),
 };

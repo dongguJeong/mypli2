@@ -5,8 +5,5 @@ export class AddPlaylistSong {
   songId: number;
 
   @IsNumber()
-  orderIndex: number;
-
-  @IsNumber()
   playlistId: number;
 }

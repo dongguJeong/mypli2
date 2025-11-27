@@ -20,10 +20,10 @@ export class Song {
   @Column({ length: 255, nullable: true, name: 'song_thumnail' })
   songThumnail: string;
 
-  @Column({ type: 'string' })
+  @Column({ type: 'varchar' })
   duration: string;
 
-  @OneToMany(() => PlaylistSong, (playlistSong) => playlistSong.playlist, {
+  @OneToMany(() => PlaylistSong, (playlistSong) => playlistSong.song, {
     cascade: true,
   })
   playlists: PlaylistSong[];

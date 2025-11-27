@@ -4,7 +4,7 @@ import axios, {
   type AxiosResponse,
 } from "axios";
 
-export class BaseRequester<Req = unknown, Res = unknown, Body = unknown> {
+export class BaseRequester<Res = unknown, Body = unknown> {
   private instance: AxiosInstance;
   private baseURL: string;
 
@@ -17,19 +17,19 @@ export class BaseRequester<Req = unknown, Res = unknown, Body = unknown> {
     });
   }
 
-  async get(endpoint: string, params?: Req): Promise<AxiosResponse<Res>> {
-    return this.instance.get<Res>(`${this.baseURL}${endpoint}`, { params });
+  async get(): Promise<AxiosResponse<Res>> {
+    return this.instance.get<Res>(`${this.baseURL}`);
   }
 
-  async post(endpoint: string, data?: Body): Promise<AxiosResponse<Res>> {
-    return this.instance.post<Res>(`${this.baseURL}${endpoint}`, data);
+  async post(data?: Body): Promise<AxiosResponse<Res>> {
+    return this.instance.post<Res>(`${this.baseURL}`, data);
   }
 
-  async patch(endpoint: string, data?: Body): Promise<AxiosResponse<Res>> {
-    return this.instance.patch<Res>(`${this.baseURL}${endpoint}`, data);
+  async patch(data?: Body): Promise<AxiosResponse<Res>> {
+    return this.instance.patch<Res>(`${this.baseURL}`, data);
   }
 
-  async delete(endpoint: string, params?: Req): Promise<AxiosResponse<Res>> {
-    return this.instance.delete<Res>(`${this.baseURL}${endpoint}`, { params });
+  async delete(): Promise<AxiosResponse<Res>> {
+    return this.instance.delete<Res>(`${this.baseURL}`);
   }
 }

@@ -26,20 +26,19 @@ export function useAuth() {
     },
   });
 
-  const { data: loggedIn, isLoading: isAuthLoading } = useQuery({
+  const { data: status } = useQuery({
     queryKey: ["auth", "status"],
     queryFn: async () => {
       const res = await Auth.status();
-      return res.data.loggedIn;
+      return res.data;
     },
     retry: false,
   });
 
   return {
-    loggedIn,
+    status,
     login,
     logout,
-    isAuthLoading,
     signup,
   };
 }

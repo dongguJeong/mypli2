@@ -3,4 +3,5 @@ export class NormalizeYoutubeVideoDto {
   youtubeUrl: string;
   songThumnail: string;
   videoId: string;
+  playlistId: number;
 }

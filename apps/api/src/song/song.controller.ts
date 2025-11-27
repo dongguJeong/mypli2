@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
 import { SongService } from './song.service';
 import { CreateSongDto } from './dto/create-song.dto';
 import { NormalizeYoutubeVideoDto } from './dto/normalize-youtubeVideo';
@@ -7,7 +7,7 @@ import { NormalizeYoutubeVideoDto } from './dto/normalize-youtubeVideo';
 export class SongController {
   constructor(private readonly songService: SongService) {}
 
-  @Post()
+  @Post('normalize')
   normalizeYoutubeVideo(@Body() dto: NormalizeYoutubeVideoDto) {
     return this.songService.normalizeYoutubeVideo(dto);
   }

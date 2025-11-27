@@ -34,6 +34,7 @@ export class PlaylistSongService {
     }
 
     if (playlist.owner.id !== userId) throw new UnauthorizedException();
+    if (!dto.songId) throw new UnauthorizedException();
 
     const currentSongCount = await this.playlistSongRepo.count({
       where: { playlist: { id: dto.playlistId } },

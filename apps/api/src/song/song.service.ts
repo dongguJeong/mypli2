@@ -1,8 +1,4 @@
-import {
-  ConflictException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Song } from './entity/song.entity';
 import { Repository } from 'typeorm';
@@ -44,16 +40,14 @@ export class SongService {
     const parsed = formatYoutubeTitle(youtubeTitle);
 
     const existingSong = await this.songRepo.findOne({
-      where: { youtubeUrl: `https://www.youtube.com/watch?v=${dto.videoId}` },
+      where: {
+        youtubeUrl: `https://www.youtube.com/watch?v=${dto.videoId}`,
+        title: parsed.title,
+        artist: parsed.artist,
+      },
     });
 
-    const existSong2 = await this.songRepo.findOne({
-      where: { title: parsed.title, artist: parsed.artist },
-    });
-
-    if (existingSong || existSong2) {
-      throw new ConflictException('Song already exists in database');
-    }
+    if (existingSong) return existingSong;
 
     const newSong = {
       title: parsed.title,

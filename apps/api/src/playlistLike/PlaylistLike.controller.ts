@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Param, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Param, Post, UseGuards } from '@nestjs/common';
 import { PlaylistLikeService } from './PlaylistLike.service';
 import { ParseIntPipe } from '@nestjs/common';
 import { SessionGuard } from 'src/auth/auth.guard';
@@ -9,8 +9,8 @@ import { CurrentUser } from 'src/auth/auth.current-user.decorator';
 export class PlaylistLikeController {
   constructor(private readonly playlistLikeService: PlaylistLikeService) {}
 
-  @Get(':playlistId')
-  addBookmark(
+  @Post(':playlistId')
+  createLike(
     @CurrentUser() userId: number,
     @Param('playlistId', ParseIntPipe) playlistId: number,
   ) {
@@ -19,7 +19,7 @@ export class PlaylistLikeController {
   }
 
   @Delete(':playlistId')
-  deleteBookmark(
+  deleteLike(
     @CurrentUser() userId: number,
     @Param('playlistId', ParseIntPipe) playlistId: number,
   ) {

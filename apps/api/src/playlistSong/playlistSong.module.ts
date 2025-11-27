@@ -6,11 +6,13 @@ import { PlaylistSongController } from './playlistSong.controller';
 import { AuthModule } from 'src/auth/auth.module';
 import { Playlist } from 'src/playlist/entity/playlist.entity';
 import { Song } from 'src/song/entity/song.entity';
+import { SongModule } from 'src/song/song.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([PlaylistSong, Playlist, Song]),
     AuthModule,
+    SongModule,
   ],
   controllers: [PlaylistSongController],
   providers: [PlaylistSongService],

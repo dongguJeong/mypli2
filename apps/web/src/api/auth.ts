@@ -1,22 +1,15 @@
-import type { ILogin } from "../component/modals/LoginModal";
-import type { LoginResponse } from "../model/auth";
+import type { ILogin, ILoginBody } from "../model/auth";
 import { ServerRequester } from "../requester/server";
 
 export const Auth = {
-  login: ({ email, password }: ILogin) =>
-    new ServerRequester<unknown, LoginResponse, ILogin>("/auth").post(
-      "/login",
-      { email, password }
-    ),
-  signup: ({ email, password }: ILogin) =>
-    new ServerRequester<unknown, LoginResponse, ILogin>("/auth").post(
-      "/signup",
-      { email, password }
-    ),
+  login: (data: ILoginBody) =>
+    new ServerRequester<ILogin, ILoginBody>("/auth/login").post(data),
+  signup: (data: ILoginBody) =>
+    new ServerRequester<ILogin, ILoginBody>("/auth/signup").post(data),
   status: () =>
-    new ServerRequester<
-      unknown,
-      { loggedIn: boolean; user?: { id: number; email: string } }
-    >("/auth").get("/status"),
-  logout: () => new ServerRequester("/auth").get("/logout"),
+    new ServerRequester<{
+      loggedIn: boolean;
+      user?: { id: number; email: string };
+    }>("/auth/status").get(),
+  logout: () => new ServerRequester("/auth/logout").get(),
 };

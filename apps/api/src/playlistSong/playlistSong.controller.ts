@@ -11,18 +11,36 @@ import { AddPlaylistSong } from './dto/add-playlistSong.dto';
 import { SessionGuard } from 'src/auth/auth.guard';
 import { CurrentUser } from 'src/auth/auth.current-user.decorator';
 import { DeletePlaylistSongParamsDto } from './dto/delete-PlaylistSong.dto';
+import { NormalizeYoutubeVideoDto } from 'src/song/dto/normalize-youtubeVideo';
+import { SongService } from 'src/song/song.service';
 
 @Controller('playlistSong')
 @UseGuards(SessionGuard)
 export class PlaylistSongController {
-  constructor(private readonly playlistSongService: PlaylistSongService) {}
+  constructor(
+    private readonly playlistSongService: PlaylistSongService,
+    private readonly songService: SongService,
+  ) {}
+
+  @Post('youtubeVideo')
+  async addYoutubeVideo(
+    @Body() dto: NormalizeYoutubeVideoDto,
+    @CurrentUser() userId: number,
+  ) {
+    const song = await this.songService.normalizeYoutubeVideo(dto);
+
+    return this.playlistSongService.addPlaylistSong(
+      { songId: song.id, playlistId: dto.playlistId },
+      userId,
+    );
+  }
 
   @Post()
   addPlaylistSong(
-    @Body() addSongdto: AddPlaylistSong,
+    @Body() addPlaylistSongdto: AddPlaylistSong,
     @CurrentUser() userId: number,
   ) {
-    return this.playlistSongService.addPlaylistSong(addSongdto, userId);
+    return this.playlistSongService.addPlaylistSong(addPlaylistSongdto, userId);
   }
 
   @Delete(':playlistId/songs/:songId')

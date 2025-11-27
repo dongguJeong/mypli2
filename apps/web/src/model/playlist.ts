@@ -1,47 +1,34 @@
-export interface PlaylistMostLikedResponse {
+import type { ISong } from "./song";
+
+export interface IPlaylist {
   id: number;
+  owner: number;
   title: string;
-  thumbnailUrl: string | null;
+  detail?: string;
+  thumnailUrl: string;
+  isPublic: boolean;
+  created_at: Date;
+}
+
+export interface IUpdatePlaylist {
+  title?: string;
+  detail?: string | null;
+  isPublic?: boolean;
+}
+
+export interface IMostLikedPlaylist extends IPlaylist {
   likeCount: number;
 }
 
-export interface PlaylistListResponse {
-  id: number;
-  title: string;
-  thumbnailUrl: string | null;
-}
-
-export interface PlaylistCreateResponse {
-  id: number;
-}
-
-export interface PlaylistDetailResponse {
-  playlist: {
-    id: number;
-    title: string;
-    detail?: string;
-    thumbnailUrl?: string;
-    isPublic: boolean;
-    createdAt: Date;
-  };
+export interface IPlaylistDetail {
+  playlist: IPlaylist;
   owner: {
     id: number;
     username: string;
+    profileImage: string | null;
   };
-  songs: {
-    id: number;
-    youtubeUrl: string;
-    title: string;
-    songThumnail: string;
-    orderIndex: number;
-  }[];
+  songs: ISong[];
   isLiked: boolean;
   isBookmarked: boolean;
   isOwner: boolean;
-}
-
-export interface PlaylistUpdateBody {
-  title?: string;
-  detail?: string;
-  isPublic?: boolean;
 }

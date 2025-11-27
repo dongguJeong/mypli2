@@ -2,12 +2,13 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
   Param,
+  ParseIntPipe,
   Post,
   UseGuards,
 } from '@nestjs/common';
 import { ReportService } from './report.service';
-import { CreateReportDto } from './dto/create-report.dto';
 import { SessionGuard } from 'src/auth/auth.guard';
 
 @Controller('report')
@@ -16,12 +17,17 @@ export class ReportController {
   constructor(private readonly reportService: ReportService) {}
 
   @Post()
-  createSongReport(@Body('dto') dto: CreateReportDto) {
-    return this.reportService.createReport(dto);
+  createSongReport(@Body('reportId') songId: number) {
+    return this.reportService.createReport(songId);
   }
 
   @Delete(':id')
-  deleteSongReport(@Param('id') id: number) {
-    return this.reportService.DeleteReportDto({ reportId: id });
+  deleteSongReport(@Param('reportId', ParseIntPipe) reportId: number) {
+    return this.reportService.deleteReport(reportId);
+  }
+
+  @Get('list')
+  getReportList() {
+    return this.reportService.getReportList();
   }
 }

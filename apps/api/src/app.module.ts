@@ -15,6 +15,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { SongModule } from './song/song.module';
 import { ReportModule } from './report/report.module';
 import { RecommendModule } from './recommend/recommend.module';
+import { Report } from './report/entity/report.entity';
+import { Song } from './song/entity/song.entity';
+import { Recommend } from './recommend/entity/recommend.entity';
 
 @Module({
   imports: [
@@ -37,6 +40,9 @@ import { RecommendModule } from './recommend/recommend.module';
           PlaylistSong,
           PlaylistBookmark,
           PlaylistLike,
+          Recommend,
+          Report,
+          Song,
         ],
         synchronize: true, // 개발 중에는 true (운영 시 false)
         charset: 'utf8mb4',
