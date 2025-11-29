@@ -28,7 +28,7 @@ export default function PlaylistCard({
 }: IPlaylistCard) {
   const [isHovered, setIsHovered] = useState(false);
   const navigate = useNavigate();
-  const { remove } = usePlaylist();
+  const { deletePlaylist } = usePlaylist();
   const { open } = useModalStore();
   function clickPlaylist(id: number) {
     navigate(`/playlist/${id}`);
@@ -74,7 +74,7 @@ export default function PlaylistCard({
                       },
                       {
                         text: "삭제",
-                        onClick: (e) => remove.mutateAsync({ id }),
+                        onClick: async () => await deletePlaylist({ id }),
                       },
                     ]
                   : [

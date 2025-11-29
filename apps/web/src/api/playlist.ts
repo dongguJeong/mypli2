@@ -11,7 +11,7 @@ export const Playlist = {
   myplaylist: () =>
     new ServerRequester<IPlaylist[]>("/playlist/myplaylist").get(),
   detail: (id: number) =>
-    new ServerRequester<IPlaylistDetail[]>(`/playlist/${id}`).get(),
+    new ServerRequester<IPlaylistDetail>(`/playlist/${id}`).get(),
   update: (id: number, data: IUpdatePlaylist) =>
     new ServerRequester<Pick<IPlaylist, "id">, IUpdatePlaylist>(
       `/playlist/${id}`

@@ -1,7 +1,12 @@
+import { IsString } from 'class-validator';
+
 export class NormalizeYoutubeVideoDto {
+  @IsString()
   title: string;
-  youtubeUrl: string;
-  songThumnail: string;
+
+  @IsString()
+  songThumbnail: string;
+
+  @IsString()
   videoId: string;
-  playlistId: number;
 }

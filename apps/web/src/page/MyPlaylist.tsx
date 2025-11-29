@@ -7,10 +7,10 @@ import PlaylistCard from "../component/PlaylistCard";
 
 export default function Myplaylist() {
   const navigate = useNavigate();
-  const { create, myPlaylist } = usePlaylist();
+  const { createPlaylist, myPlaylist } = usePlaylist();
 
   async function clickPlus() {
-    const { id } = await create.mutateAsync();
+    const { id } = await createPlaylist();
     navigate(`/playlist/${id}`);
   }
 
@@ -32,13 +32,13 @@ export default function Myplaylist() {
       </div>
 
       <div className="grid grid-cols-[13rem_13rem_13rem_13rem_13rem] gap-3">
-        {myPlaylist.data && myPlaylist.data.length > 0 ? (
-          myPlaylist.data.map((playlist) => (
+        {myPlaylist !== undefined && myPlaylist.length > 0 ? (
+          myPlaylist.map((playlist) => (
             <PlaylistCard
               key={playlist.title}
               id={playlist.id}
               title={playlist.title}
-              thumbnailUrl={playlist.thumbnailUrl}
+              thumbnailUrl={playlist.thumnailUrl}
               page="myplaylist"
               moreButton
             />

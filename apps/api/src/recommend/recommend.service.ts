@@ -75,7 +75,7 @@ export class RecommendService {
   async getRecommends(limit = 3) {
     const recommends = await this.recommendRepo.find({
       relations: ['song', 'user'],
-      take: limit,
+      ...(limit && { take: limit }),
       order: { createdAt: 'DESC' }, // 최신순
     });
 
@@ -88,7 +88,7 @@ export class RecommendService {
         title: recommend.song.title,
         artist: recommend.song.artist,
         youtubeUrl: recommend.song.youtubeUrl,
-        thumbnailUrl: recommend.song.songThumnail,
+        thumbnailUrl: recommend.song.songThumbnail,
         duration: recommend.song.duration,
       },
       recommendedBy: {

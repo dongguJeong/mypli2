@@ -32,10 +32,17 @@ export class SearchService {
   }
 
   async searchSongRepo(q: string) {
-    return await this.songRepo
+    const titleRes = await this.songRepo
       .createQueryBuilder('playlist')
       .where('LOWER(playlist.title) LIKE LOWER(:q)', { q: `%${q}%` })
       .getMany();
+
+    const singerRes = await this.songRepo
+      .createQueryBuilder('playlist')
+      .where('LOWER(playlist.artist) LIKE LOWER(:q)', { q: `%${q}%` })
+      .getMany();
+
+    return [...titleRes, ...singerRes];
   }
 
   async searchPlaylist(q: string) {

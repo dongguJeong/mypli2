@@ -5,7 +5,7 @@ import { Recommend } from "../api/recommend";
 export function useRecommend() {
   const queryClient = useQueryClient();
 
-  const { mutateAsync: recommend } = useMutation({
+  const { mutateAsync: createRecommend } = useMutation({
     mutationFn: async (data: IRecommendBody) =>
       (await Recommend.recommend(data)).data,
     onSuccess: () => {
@@ -13,7 +13,7 @@ export function useRecommend() {
     },
   });
 
-  const { mutateAsync: update } = useMutation({
+  const { mutateAsync: updateRecommend } = useMutation({
     mutationFn: async (data: Partial<IRecommendBody>) =>
       (await Recommend.update(data)).data,
     onSuccess: () => {
@@ -21,7 +21,7 @@ export function useRecommend() {
     },
   });
 
-  const { mutateAsync: remove } = useMutation({
+  const { mutateAsync: deleteRecommend } = useMutation({
     mutationFn: async (recommendId: number) =>
       (await Recommend.delete(recommendId)).data,
     onSuccess: () => {
@@ -29,14 +29,14 @@ export function useRecommend() {
     },
   });
 
-  return { recommend, update, remove };
+  return { createRecommend, updateRecommend, deleteRecommend };
 }
 
-export function useRecommendList(limit: number) {
+export function useRecommendList(limit?: number) {
   const { data: recommendList } = useQuery({
     queryKey: ["recommend", limit],
     queryFn: async () => (await Recommend.recommendList(limit)).data,
   });
 
-  return recommendList;
+  return { recommendList };
 }

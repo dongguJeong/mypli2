@@ -11,5 +11,5 @@ export const Song = {
     ).delete(),
 
   normalizeYoutubeVideo: (data: INormalizeYoutubeVideo) =>
-    new ServerRequester("song/normalize").post(data),
+    new ServerRequester<ISong>("/song/normalize").post(data),
 };

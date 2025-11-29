@@ -6,6 +6,7 @@ import Search from "./page/Search";
 import Bookmark from "./page/Bookmark";
 import Myplaylist from "./page/MyPlaylist";
 import Playlist from "./page/Playlist";
+import Bulletin from "./page/Bulletin";
 
 const routeList = [
   {
@@ -23,6 +24,11 @@ const routeList = [
   {
     path: "/mypli",
     element: <Myplaylist />,
+  },
+
+  {
+    path: "/bulletin",
+    element: <Bulletin />,
   },
   {
     path: "/playlist/:id",

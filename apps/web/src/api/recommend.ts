@@ -13,6 +13,8 @@ export const Recommend = {
   delete: (recommendId: number) =>
     new ServerRequester(`/recommend/${recommendId}`).delete(),
 
-  recommendList: (limit: number) =>
-    new ServerRequester<IRecommend[]>(`/recommend/list?limit=${limit}`).get(),
+  recommendList: (limit?: number) =>
+    new ServerRequester<IRecommend[]>(
+      `/recommend/list${limit !== undefined ? `?limit=${limit}` : ""}`
+    ).get(),
 };

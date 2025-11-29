@@ -163,7 +163,7 @@ export class PlaylistService {
         title: v.song.title,
         artist: v.song.artist,
         youtubeUrl: v.song.youtubeUrl,
-        songThumnail: v.song.songThumnail,
+        songThumnail: v.song.songThumbnail,
         duration: v.song.duration,
       })),
       isLiked,

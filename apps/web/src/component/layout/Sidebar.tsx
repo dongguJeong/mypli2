@@ -8,8 +8,12 @@ import {
 } from "react-icons/io5";
 import { useSidebarStore } from "../../store/sidebar-store";
 import { twMerge } from "tailwind-merge";
-import { LuCirclePlus } from "react-icons/lu";
-import { FaRegBookmark, FaBookmark } from "react-icons/fa";
+import {
+  FaRegBookmark,
+  FaBookmark,
+  FaThumbsUp,
+  FaRegThumbsUp,
+} from "react-icons/fa";
 
 const items = [
   {
@@ -34,11 +38,11 @@ const items = [
     fillIcon: <FaBookmark className="w-6 h-6" />,
   },
   {
-    href: "/create",
-    shortTitle: "생성",
-    longTitle: "생성하기",
-    outlineIcon: <LuCirclePlus className="w-6 h-6" />,
-    fillIcon: <LuCirclePlus className="w-6 h-6" />,
+    href: "/bulletin",
+    shortTitle: "추천",
+    longTitle: "추천 게시판",
+    outlineIcon: <FaRegThumbsUp className="w-6 h-6" />,
+    fillIcon: <FaThumbsUp className="w-6 h-6" />,
   },
 ];
 

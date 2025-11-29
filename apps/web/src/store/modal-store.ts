@@ -10,7 +10,7 @@ export type ModalType =
 
 interface ModalStore {
   currentModal: ModalType;
-  modalData: number | null;
+  playlistId: number | null;
   open: (type: Exclude<ModalType, null>, data?: number) => void;
   close: () => void;
   isOpen: (type: Exclude<ModalType, null>) => boolean;
@@ -18,8 +18,9 @@ interface ModalStore {
 
 export const useModalStore = create<ModalStore>((set, get) => ({
   currentModal: null,
-  modalData: null,
-  open: (type, data) => set({ currentModal: type, modalData: data }),
-  close: () => set({ currentModal: null, modalData: null }),
+  playlistId: null,
+  open: (type) => set({ currentModal: type }),
+  close: () => set({ currentModal: null }),
+  setPlaylistId: (id: number | null) => set({ playlistId: id }),
   isOpen: (type) => get().currentModal === type,
 }));

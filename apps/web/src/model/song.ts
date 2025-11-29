@@ -3,13 +3,12 @@ export interface ISong {
   youtubeUrl: string;
   title: string;
   artist: string;
-  songThumnail: string;
+  songThumbnail: string;
   duration: string;
 }
 
 export interface INormalizeYoutubeVideo {
   title: string;
-  youtubeUrl: string;
-  songThumnail: string;
   videoId: string;
+  songThumbnail: string;
 }

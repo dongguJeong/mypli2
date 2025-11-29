@@ -54,7 +54,7 @@ export class PlaylistSongService {
 
       await this.playlistRepo.update(
         { id: dto.playlistId },
-        { thumbnailUrl: song?.songThumnail },
+        { thumbnailUrl: song?.songThumbnail },
       );
     }
 

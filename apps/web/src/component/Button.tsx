@@ -50,10 +50,9 @@ export default function Button({
       disabled={disabled}
       {...props}
       className={twMerge(
-        "flex items-center rounded-sm cursor-pointer gap-2",
+        "flex items-center cursor-pointer gap-2 rounded-sm",
         buttonSizeMap[buttonSize],
-        colorMap[color].base,
-        disabled ? "bg-slate-500 text-white opacity-50 cursor-not-allowed" : "",
+        !disabled && colorMap[color].base,
         ghost ? "bg-transparent" : "",
         border ? `border-2 ${colorMap[color].border}` : "border-transparent",
         ghost && "bg-transparent text-current",

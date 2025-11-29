@@ -19,6 +19,7 @@ export class SongService {
   }
 
   async normalizeYoutubeVideo(dto: NormalizeYoutubeVideoDto) {
+    console.log(dto.songThumbnail);
     const videoRes = await axios.get(
       'https://www.googleapis.com/youtube/v3/videos',
       {
@@ -53,8 +54,8 @@ export class SongService {
       title: parsed.title,
       artist: parsed.artist,
       duration: video.contentDetails.duration,
-      youtubeUrl: `https://www.youtube.com/watch?v=${dto.videoId}`,
-      songThumbnail: video.snippet.thumbnails.high.url as string,
+      youtubeUrl: `https://www.youtube.com/embed/${dto.videoId}?autoplay=1`,
+      songThumbnail: dto.songThumbnail,
     };
 
     return await this.songRepo.save(newSong);

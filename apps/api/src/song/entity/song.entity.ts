@@ -17,8 +17,8 @@ export class Song {
   @Column({ length: 255, default: 'Unknown Artist' })
   artist: string;
 
-  @Column({ length: 255, nullable: true, name: 'song_thumnail' })
-  songThumnail: string;
+  @Column({ length: 255, nullable: true, name: 'song_thumbnail' })
+  songThumbnail: string;
 
   @Column({ type: 'varchar' })
   duration: string;
