@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import YouTube, { type YouTubeProps } from "react-youtube";
+import YouTube, { type YouTubeEvent, type YouTubeProps } from "react-youtube";
 import { useSoundPlayerStore } from "../store/soundplayer-store";
 import type { ISong } from "../model/song";
 import Button from "./Button";
@@ -16,7 +16,7 @@ export default function SoundPlayer() {
     setPlayStatus,
   } = useSoundPlayerStore();
 
-  const [player, setPlayer] = useState<any>(null);
+  const [player, setPlayer] = useState<YouTubeEvent["target"] | null>(null);
   const [currentSong, setCurrentSong] = useState<ISong>();
   const [currentTime, setCurrentTime] = useState<number>(0);
   const [duration, setDuration] = useState<number>(0);
