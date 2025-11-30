@@ -18,7 +18,6 @@ import type { Session as ExpressSession } from 'express-session';
 export class PlaylistController {
   constructor(private readonly playlistService: PlaylistService) {}
 
-  // === GET 라우트들 (정적 → 동적 순서) ===
   @Get('myplaylist')
   getMyplaylist(@CurrentUser('id', ParseIntPipe) userId: number) {
     return this.playlistService.listMine(userId);

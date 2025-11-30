@@ -1,7 +1,7 @@
-import { IsOptional, IsString } from 'class-validator';
 import { Song } from 'src/song/entity/song.entity';
 import { Users } from 'src/users/entity/users.entity';
 import {
+  Column,
   CreateDateColumn,
   Entity,
   ManyToOne,
@@ -19,8 +19,7 @@ export class Recommend {
   @ManyToOne(() => Song, (song) => song.recommends)
   song: Song;
 
-  @IsString()
-  @IsOptional()
+  @Column({ type: 'text', nullable: true })
   description: string;
 
   @CreateDateColumn({ name: 'created_at' })

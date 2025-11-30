@@ -1,8 +1,11 @@
 import type React from "react";
 import Gnb from "./Gnb";
 import Sidebar from "./Sidebar";
+import { useSoundPlayerStore } from "../../store/soundplayer-store";
+import SoundPlayer from "../SoundPlayer";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
+  const { currentPlaylist } = useSoundPlayerStore();
   return (
     <div className="w-full  min-h-screen grid grid-rows-[auto_1fr] text-white">
       <Gnb />
@@ -11,6 +14,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <main className="flex-1 overflow-auto px-20 pt-10 bg-[#212121]">
           {children}
         </main>
+        {<SoundPlayer />}
       </div>
     </div>
   );

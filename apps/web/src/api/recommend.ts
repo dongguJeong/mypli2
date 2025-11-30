@@ -6,9 +6,9 @@ export const Recommend = {
     new ServerRequester<{ id: number }, IRecommendBody>("/recommend").post(
       data
     ),
-  update: (data: Partial<IRecommendBody>) =>
-    new ServerRequester<{ id: number }, Partial<IRecommendBody>>(
-      "/recommend"
+  update: (recommendId: number, data: Pick<IRecommendBody, "description">) =>
+    new ServerRequester<{ id: number }, Pick<IRecommendBody, "description">>(
+      `/recommend/${recommendId}`
     ).patch(data),
   delete: (recommendId: number) =>
     new ServerRequester(`/recommend/${recommendId}`).delete(),

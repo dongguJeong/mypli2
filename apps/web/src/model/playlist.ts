@@ -5,7 +5,7 @@ export interface IPlaylist {
   owner: number;
   title: string;
   detail?: string;
-  thumnailUrl: string;
+  thumbnailUrl: string;
   isPublic: boolean;
   created_at: Date;
 }

@@ -23,9 +23,10 @@ export class RecommendController {
   @Post()
   @UseGuards(SessionGuard)
   createRecommend(
-    @Body('dto') dto: CreateRecommendDto,
+    @Body() dto: CreateRecommendDto,
     @CurrentUser() userId: number,
   ) {
+    console.log(dto);
     return this.recommendService.createRecommend(dto, userId);
   }
 

@@ -14,8 +14,13 @@ export function useRecommend() {
   });
 
   const { mutateAsync: updateRecommend } = useMutation({
-    mutationFn: async (data: Partial<IRecommendBody>) =>
-      (await Recommend.update(data)).data,
+    mutationFn: async ({
+      recommendId,
+      data,
+    }: {
+      recommendId: number;
+      data: Pick<IRecommendBody, "description">;
+    }) => (await Recommend.update(recommendId, data)).data,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["recommend"] });
     },

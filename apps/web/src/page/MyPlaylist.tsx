@@ -4,49 +4,109 @@ import Title from "../component/Title";
 import { useNavigate } from "react-router";
 import { usePlaylist } from "../hook/usePlaylist";
 import PlaylistCard from "../component/PlaylistCard";
+import MoreButton from "../component/MoreButton";
+import UpdatePlaylistModal from "../component-page/myplaylist/updatePlaylistModal";
+import { useState } from "react";
 
 export default function Myplaylist() {
   const navigate = useNavigate();
-  const { createPlaylist, myPlaylist } = usePlaylist();
+  const { createPlaylist, myPlaylist, deletePlaylist, updatePlaylist } =
+    usePlaylist();
+
+  const [open, setIsOpen] = useState(false);
+  const [selectedPlaylist, setSelectedPlaylist] = useState<{
+    title: string;
+    detail: string;
+    isPublic: boolean;
+    playlistId: number;
+  } | null>(null);
 
   async function clickPlus() {
     const { id } = await createPlaylist();
     navigate(`/playlist/${id}`);
   }
 
-  return (
-    <div className="w-full flex flex-col gap-10">
-      <div className="flex  gap-10">
-        <Title text="내 플레이리스트" />
-        <Button
-          onClick={clickPlus}
-          buttonSize="sm"
-          color="white"
-          ghost
-          border
-          className="border-white border hover:underline"
-        >
-          <GoPlus />
-          플레이리스트 생성
-        </Button>
-      </div>
+  function handleUpdate(
+    playlistId: number,
+    title: string,
+    description: string,
+    ispublic: boolean
+  ) {
+    updatePlaylist({
+      id: playlistId,
+      data: {
+        title,
+        detail: description,
+        isPublic: ispublic,
+      },
+    });
+  }
 
-      <div className="grid grid-cols-[13rem_13rem_13rem_13rem_13rem] gap-3">
-        {myPlaylist !== undefined && myPlaylist.length > 0 ? (
-          myPlaylist.map((playlist) => (
-            <PlaylistCard
-              key={playlist.title}
-              id={playlist.id}
-              title={playlist.title}
-              thumbnailUrl={playlist.thumnailUrl}
-              page="myplaylist"
-              moreButton
-            />
-          ))
-        ) : (
-          <div>플레이리스트를 만들어보세요</div>
-        )}
+  return (
+    <>
+      {selectedPlaylist && open && (
+        <UpdatePlaylistModal
+          isOpen={open}
+          onUpdate={handleUpdate}
+          playlistId={selectedPlaylist.playlistId}
+          initialTitle={selectedPlaylist.title}
+          initialDescription={selectedPlaylist.detail}
+          initialPublic={selectedPlaylist.isPublic}
+          onClose={() => {
+            setIsOpen(false);
+            setSelectedPlaylist(null);
+          }}
+        />
+      )}
+      <div className="w-full flex flex-col gap-10">
+        <section className="flex  gap-10">
+          <Title text="내 플레이리스트" />
+          <Button
+            onClick={clickPlus}
+            buttonSize="sm"
+            color="white"
+            ghost
+            border
+            className="border-white border hover:underline"
+          >
+            <GoPlus />
+            플레이리스트 생성
+          </Button>
+        </section>
+
+        <section className="grid grid-cols-4">
+          {myPlaylist?.map((v) => (
+            <div className="flex flex-col ">
+              <PlaylistCard imgUrl={v.thumbnailUrl} />
+              <div className="flex justify-between px-3 py-4">
+                <span>{v.title}</span>
+                <MoreButton
+                  items={[
+                    {
+                      text: "수정",
+                      onClick: () => {
+                        setSelectedPlaylist({
+                          playlistId: v.id,
+                          title: v.title,
+                          detail: v.detail ?? "",
+                          isPublic: v.isPublic,
+                        });
+                        setIsOpen(true);
+                      },
+                    },
+                    {
+                      text: "삭제",
+                      onClick: () => {
+                        deletePlaylist(v.id);
+                      },
+                    },
+                  ]}
+                />
+              </div>
+            </div>
+          ))}
+        </section>
       </div>
-    </div>
+    </>
   );
 }

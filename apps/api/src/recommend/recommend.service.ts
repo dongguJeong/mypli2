@@ -1,5 +1,4 @@
 import {
-  BadRequestException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -17,6 +16,7 @@ export class RecommendService {
   ) {}
 
   async createRecommend(dto: CreateRecommendDto, userId: number) {
+    console.log(dto);
     const recommend = this.recommendRepo.create({
       user: { id: userId },
       song: { id: dto.songId },
@@ -54,22 +54,13 @@ export class RecommendService {
       throw new NotFoundException('Recommend not found');
     }
     if (recommend?.user.id !== userId) {
-      return new UnauthorizedException();
+      throw new UnauthorizedException();
     }
 
-    const { ...updateFields } = dto;
-    if (Object.keys(updateFields).length === 0) {
-      throw new BadRequestException('No fields to update');
-    }
-
-    await this.recommendRepo.update({ id: recommendId }, updateFields);
-
+    recommend.description = dto.description;
     await this.recommendRepo.save(recommend);
 
-    return await this.recommendRepo.findOne({
-      where: { id: recommendId },
-      relations: ['song', 'user'],
-    });
+    return recommend;
   }
 
   async getRecommends(limit = 3) {
@@ -88,7 +79,7 @@ export class RecommendService {
         title: recommend.song.title,
         artist: recommend.song.artist,
         youtubeUrl: recommend.song.youtubeUrl,
-        thumbnailUrl: recommend.song.songThumbnail,
+        songThumbnail: recommend.song.songThumbnail,
         duration: recommend.song.duration,
       },
       recommendedBy: {

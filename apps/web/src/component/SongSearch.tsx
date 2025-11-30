@@ -5,7 +5,7 @@ import Button from "./Button";
 import { useSong } from "../hook/useSong";
 import type { ISong } from "../model/song";
 import Title from "./Title";
-import { formatPMTime } from "../hook/useFormat";
+import { formatLongText, formatPMTime } from "../hook/useFormat";
 
 interface ISongSearch {
   clickAddYoutubeVideo: (song: ISong) => unknown;
@@ -75,9 +75,7 @@ export default function SongSearch({
                     className="hover:underline wrap-break-word cursor-pointer"
                     onClick={() => setPreviewId(v.id.videoId)}
                   >
-                    {v.snippet.title.length > 40
-                      ? v.snippet.title.slice(0, 40) + "..."
-                      : v.snippet.title}
+                    {formatLongText(v.snippet.title)}
                   </span>
                 </div>
 

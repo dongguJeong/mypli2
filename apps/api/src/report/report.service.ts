@@ -28,7 +28,7 @@ export class ReportService {
         'song.title',
         'song.artist',
         'song.youtubeUrl',
-        'song.thumbnailUrl',
+        'song.songThumbnail',
       ])
       .addSelect('COUNT(report.id)', 'reportCount')
       .groupBy('song.id')

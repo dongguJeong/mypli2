@@ -2,7 +2,7 @@ import type { ISong } from "./song";
 
 export interface IRecommendBody {
   songId: number;
-  description: string | null;
+  description: string;
 }
 
 export interface IRecommend {

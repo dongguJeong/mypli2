@@ -40,9 +40,9 @@ export default function SignupModal() {
   };
 
   return (
-    <Modal>
+    <Modal onClick={close}>
       <div
-        className="w-xl min-h-1/2 bg-[#212121] flex flex-col gap-6 p-8"
+        className="w-xl h-100 bg-[#212121] flex flex-col gap-6 "
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center">

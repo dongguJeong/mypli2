@@ -24,7 +24,7 @@ export function usePlaylist() {
   });
 
   const { mutateAsync: deletePlaylist } = useMutation({
-    mutationFn: ({ id }: { id: number }) => Playlist.delete(id),
+    mutationFn: (id: number) => Playlist.delete(id),
     onSuccess: async () =>
       await queryClient.invalidateQueries({ queryKey: ["playlists"] }),
   });
