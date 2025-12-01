@@ -6,11 +6,7 @@ import Button from "../Button";
 import Input from "../Input";
 import Modal from "../Modal";
 import { useForm, type SubmitHandler } from "react-hook-form";
-
-export interface ILogin {
-  email: string;
-  password: string;
-}
+import type { ISignUpBody } from "../../model/auth";
 
 export default function SignupModal() {
   const {
@@ -18,13 +14,13 @@ export default function SignupModal() {
     handleSubmit,
     formState: { errors },
     setError,
-  } = useForm<ILogin>();
+  } = useForm<ISignUpBody>();
 
   const { showAlert } = useAlert();
 
   const { open, currentModal } = useModalStore();
   if (currentModal !== "signup") return;
-  const onSubmit: SubmitHandler<ILogin> = async (data) => {
+  const onSubmit: SubmitHandler<ISignUpBody> = async (data) => {
     try {
       await Auth.signup(data);
       showAlert("회원가입 성공");
@@ -42,7 +38,7 @@ export default function SignupModal() {
   return (
     <Modal onClick={close}>
       <div
-        className="w-xl h-100 bg-[#212121] flex flex-col gap-6 "
+        className="w-xl h-100 bg-[#212121] flex flex-col gap-6 p-8"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex justify-between items-center">
@@ -63,6 +59,15 @@ export default function SignupModal() {
               error={!!errors.email}
               placeholder="이메일"
               {...register("email", { required: true })}
+            />
+
+            <Input
+              type="username"
+              inputSize="lg"
+              className="rounded-sm"
+              error={!!errors.username}
+              placeholder="닉네임"
+              {...register("username", { required: true })}
             />
 
             <Input

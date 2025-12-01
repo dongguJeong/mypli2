@@ -1,4 +1,8 @@
-import type { INormalizeYoutubeVideo, ISong } from "../model/song";
+import type {
+  INormalizeYoutubeVideo,
+  ISong,
+  IUpdateSongBody,
+} from "../model/song";
 import { ServerRequester } from "../requester/server";
 
 export const Song = {
@@ -12,4 +16,7 @@ export const Song = {
 
   normalizeYoutubeVideo: (data: INormalizeYoutubeVideo) =>
     new ServerRequester<ISong>("/song/normalize").post(data),
+
+  updateSong: (songId: number, data: IUpdateSongBody) =>
+    new ServerRequester<ISong>(`/song/${songId}`).patch(data),
 };

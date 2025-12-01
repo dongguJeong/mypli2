@@ -14,30 +14,23 @@ export class ReportService {
     return newReport;
   }
 
-  async deleteReport(reportId: number) {
-    await this.reportRepo.delete({ id: reportId });
-    return { id: reportId };
+  async deleteReport(songId: number) {
+    await this.reportRepo.delete({ song: { id: songId } });
+    return { id: songId };
   }
 
   async getReportList() {
     const reports = await this.reportRepo
       .createQueryBuilder('report')
       .leftJoinAndSelect('report.song', 'song')
-      .select([
-        'song.id',
-        'song.title',
-        'song.artist',
-        'song.youtubeUrl',
-        'song.songThumbnail',
-      ])
+      .select('song')
       .addSelect('COUNT(report.id)', 'reportCount')
       .groupBy('song.id')
-      .orderBy('reportCount', 'DESC')
       .getRawAndEntities();
 
-    return reports.raw.map((raw, index) => ({
-      song: reports.entities[index].song,
-      reportCount: parseInt(raw.reportCount),
+    return reports.entities.map((report, index) => ({
+      song: report.song,
+      reportCount: parseInt(reports.raw[index].reportCount),
     }));
   }
 }

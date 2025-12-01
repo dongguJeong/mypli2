@@ -13,7 +13,7 @@ interface IInput extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 export default function Input({
-  color = "primary",
+  color = "white",
   border = true,
   ghost,
   inputSize = "md",
@@ -48,12 +48,14 @@ export default function Input({
   return (
     <div
       className={twMerge(
-        "flex items-center w-full outline-none gap-2 cursor-pointer ",
+        "flex items-center w-full outline-none gap-2 cursor-pointer rounded-sm",
         inputSizeMap[inputSize],
         colorMap[color].base,
         disabled ? "bg-slate-500 text-white opacity-50 cursor-not-allowed" : "",
         ghost ? "bg-transparent" : "",
-        border ? `border-2 ${colorMap[color].border}` : "border-transparent",
+        border
+          ? `border ${colorMap[color].border} focus:ring-1`
+          : "border-transparent",
         ghost && "bg-transparent text-current",
         disabled && "bg-slate-500 text-white opacity-50 cursor-not-allowed",
         error && "border-red-500 focus-within:border-red-500 border-2",

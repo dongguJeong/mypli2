@@ -5,8 +5,8 @@ import { useNavigate } from "react-router";
 import { usePlaylist } from "../hook/usePlaylist";
 import PlaylistCard from "../component/PlaylistCard";
 import MoreButton from "../component/MoreButton";
-import UpdatePlaylistModal from "../component-page/myplaylist/updatePlaylistModal";
 import { useState } from "react";
+import MyplaylistEditModal from "../component-page/myplaylist/myplaylist-editModal";
 
 export default function Myplaylist() {
   const navigate = useNavigate();
@@ -26,7 +26,11 @@ export default function Myplaylist() {
     navigate(`/playlist/${id}`);
   }
 
-  function handleUpdate(
+  function goToPlaylist(playlistId: number) {
+    navigate(`/playlist/${playlistId}`);
+  }
+
+  function handleSubmit(
     playlistId: number,
     title: string,
     description: string,
@@ -45,9 +49,9 @@ export default function Myplaylist() {
   return (
     <>
       {selectedPlaylist && open && (
-        <UpdatePlaylistModal
+        <MyplaylistEditModal
           isOpen={open}
-          onUpdate={handleUpdate}
+          onSubmit={handleSubmit}
           playlistId={selectedPlaylist.playlistId}
           initialTitle={selectedPlaylist.title}
           initialDescription={selectedPlaylist.detail}
@@ -74,12 +78,16 @@ export default function Myplaylist() {
           </Button>
         </section>
 
-        <section className="grid grid-cols-4">
+        <section className="grid grid-cols-4 gap-10">
           {myPlaylist?.map((v) => (
             <div className="flex flex-col ">
-              <PlaylistCard imgUrl={v.thumbnailUrl} />
-              <div className="flex justify-between px-3 py-4">
-                <span>{v.title}</span>
+              <PlaylistCard
+                imgUrl={v.thumbnailUrl || "/no-image.jpg"}
+                className="max-w-70 min-w-50"
+                onClick={() => goToPlaylist(v.id)}
+              />
+              <div className="flex justify-between pl-1 py-4">
+                <span onClick={() => goToPlaylist(v.id)}>{v.title}</span>
                 <MoreButton
                   items={[
                     {

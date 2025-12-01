@@ -26,16 +26,19 @@ export function useAuth() {
     },
   });
 
-  const { data: status } = useQuery({
+  const { data: status, isLoading: statusLoading } = useQuery({
     queryKey: ["auth", "status"],
     queryFn: async () => {
       const res = await Auth.status();
+      console.log(res.data);
       return res.data;
     },
     retry: false,
+    staleTime: 5 * 60 * 1000,
   });
 
   return {
+    statusLoading,
     status,
     login,
     logout,

@@ -1,7 +1,7 @@
 import { twMerge } from "tailwind-merge";
 
 interface IButton extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  color?: "primary" | "black" | "white";
+  color?: "primary" | "black" | "white" | "gray";
   border?: boolean;
   ghost?: boolean;
   buttonSize?: "sm" | "md" | "lg";
@@ -37,11 +37,16 @@ export default function Button({
     },
     black: {
       base: "bg-black text-white",
-      border: "border-white",
+      border: "border-black",
     },
     white: {
       base: "bg-white text-black",
-      border: "border-black",
+      border: "border-white",
+    },
+
+    gray: {
+      base: "bg-gray text-white",
+      border: "border-gray",
     },
   };
 
@@ -54,7 +59,7 @@ export default function Button({
         buttonSizeMap[buttonSize],
         !disabled && colorMap[color].base,
         ghost ? "bg-transparent" : "",
-        border ? `border-2 ${colorMap[color].border}` : "border-transparent",
+        border ? `border ${colorMap[color].border}` : "border-transparent",
         ghost && "bg-transparent text-current",
         disabled && "bg-slate-500 text-white opacity-50 cursor-not-allowed",
         className

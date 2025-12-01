@@ -14,7 +14,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <main className="flex-1 overflow-auto px-20 pt-10 bg-[#212121]">
           {children}
         </main>
-        {<SoundPlayer />}
+        {currentPlaylist.length > 0 && <SoundPlayer />}
       </div>
     </div>
   );

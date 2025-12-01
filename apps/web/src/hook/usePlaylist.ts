@@ -19,8 +19,10 @@ export function usePlaylist() {
   const { mutateAsync: updatePlaylist } = useMutation({
     mutationFn: ({ id, data }: { id: number; data: IUpdatePlaylist }) =>
       Playlist.update(id, data),
-    onSuccess: async () =>
-      await queryClient.invalidateQueries({ queryKey: ["playlists"] }),
+    onSuccess: async (_, data) => {
+      await queryClient.invalidateQueries({ queryKey: ["playlists"] });
+      await queryClient.invalidateQueries({ queryKey: ["playlist", data.id] });
+    },
   });
 
   const { mutateAsync: deletePlaylist } = useMutation({

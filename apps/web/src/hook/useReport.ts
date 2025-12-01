@@ -13,5 +13,10 @@ export function useReport() {
     queryKey: ["report"],
   });
 
-  return { reportSong, reportList };
+  const { mutateAsync: deleteReport } = useMutation({
+    mutationFn: async (songId: number) => (await Report.delete(songId)).data,
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["report"] }),
+  });
+
+  return { reportSong, reportList, deleteReport };
 }

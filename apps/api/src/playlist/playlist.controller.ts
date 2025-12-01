@@ -8,11 +8,13 @@ import {
   Patch,
   Post,
   Session,
+  UseGuards,
 } from '@nestjs/common';
 import { PlaylistService } from './playlist.service';
 import { CurrentUser } from 'src/auth/auth.current-user.decorator';
 import { UpdatePlaylistDto } from './dto/update-playlist.dto';
 import type { Session as ExpressSession } from 'express-session';
+import { SessionGuard } from 'src/auth/auth.guard';
 
 @Controller('playlist')
 export class PlaylistController {
@@ -34,6 +36,7 @@ export class PlaylistController {
   }
 
   @Get(':playlistId')
+  @UseGuards(SessionGuard)
   getDetail(
     @Param('playlistId', ParseIntPipe) playlistId: number,
     @Session() session: ExpressSession,
@@ -43,11 +46,13 @@ export class PlaylistController {
   }
 
   @Post()
+  @UseGuards(SessionGuard)
   createPlaylist(@CurrentUser(ParseIntPipe) userId: number) {
     return this.playlistService.create(userId);
   }
 
   @Patch(':playlistId')
+  @UseGuards(SessionGuard)
   updatePlaylist(
     @Param('playlistId', ParseIntPipe) playlistId: number,
     @Body() updatePlaylistDto: UpdatePlaylistDto,
@@ -57,6 +62,7 @@ export class PlaylistController {
   }
 
   @Delete(':playlistId')
+  @UseGuards(SessionGuard)
   deletePlaylist(
     @Param('playlistId', ParseIntPipe) playlistId: number,
     @CurrentUser(ParseIntPipe) userId: number,

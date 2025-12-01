@@ -1,7 +1,8 @@
-import { Body, Controller, Delete, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Patch, Post } from '@nestjs/common';
 import { SongService } from './song.service';
 import { CreateSongDto } from './dto/create-song.dto';
 import { NormalizeYoutubeVideoDto } from './dto/normalize-youtubeVideo';
+import { UpdateSongDto } from './dto/update-song.dto';
 
 @Controller('song')
 export class SongController {
@@ -19,6 +20,11 @@ export class SongController {
       message: '추가',
       song,
     };
+  }
+
+  @Patch()
+  updateSong(@Param('id') id: number, @Body() dto: UpdateSongDto) {
+    return this.songService.updateSong(dto);
   }
 
   // Todo : admin 계정만 삭제 가능

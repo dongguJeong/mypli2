@@ -7,11 +7,7 @@ import Input from "../Input";
 import Modal from "../Modal";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import { IoClose } from "react-icons/io5";
-
-export interface ILogin {
-  email: string;
-  password: string;
-}
+import type { ILoginBody } from "../../model/auth";
 
 export default function LoginModal() {
   const {
@@ -19,14 +15,14 @@ export default function LoginModal() {
     handleSubmit,
     setError,
     formState: { errors },
-  } = useForm<ILogin>();
+  } = useForm<ILoginBody>();
 
   const { showAlert } = useAlert();
 
   const { open, currentModal, close } = useModalStore();
   const { login } = useAuth();
   if (currentModal !== "login") return;
-  const onSubmit: SubmitHandler<ILogin> = (data) => {
+  const onSubmit: SubmitHandler<ILoginBody> = (data) => {
     login.mutate(data, {
       onSuccess: () => {
         showAlert("로그인 성공");

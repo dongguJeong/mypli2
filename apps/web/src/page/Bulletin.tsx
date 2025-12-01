@@ -13,10 +13,12 @@ import { useModalStore } from "../store/modal-store";
 import { useReport } from "../hook/useReport";
 import SongToMyplaylistModal from "../component/modals/SongToMyplaylistModal";
 import { usePlaylistSong } from "../hook/usePlaylistSong";
+import { useSoundPlayerStore } from "../store/soundplayer-store";
 
 export default function Bulletin() {
   const { recommendList } = useRecommendList();
   const { createRecommend, updateRecommend, deleteRecommend } = useRecommend();
+  const { setCurrentPlaylist } = useSoundPlayerStore();
   const { addPlaylistSong } = usePlaylistSong();
   const { reportSong } = useReport();
   const { showConfirm, showAlert } = useAlert();
@@ -108,10 +110,11 @@ export default function Bulletin() {
       </section>
 
       <section>
-        <ul className="flex flex-col ">
+        <ul className="flex flex-col gap-1 ">
           {recommendList?.map((v) => (
             <li key={v.id}>
               <SongList
+                onClick={() => setCurrentPlaylist([v.song])}
                 song={v.song}
                 description={v.description}
                 duration={false}
@@ -155,7 +158,7 @@ export default function Bulletin() {
                                 }),
                             },
                             {
-                              text: "노래 이상 신고",
+                              text: "노래 신고",
                               onClick: () => {
                                 reportSong(v.song.id);
                               },

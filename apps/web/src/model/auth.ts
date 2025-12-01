@@ -6,7 +6,20 @@ export interface ILogin {
   };
 }
 
+export interface IUser {
+  id: number;
+  email: string;
+  username: string;
+  isAdmin: boolean;
+}
+
 export interface ILoginBody {
   email: string;
+  password: string;
+}
+
+export interface ISignUpBody {
+  email: string;
+  username: string;
   password: string;
 }

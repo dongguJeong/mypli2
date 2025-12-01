@@ -50,6 +50,7 @@ export default function SongSearch({
       <div className="flex flex-col gap-5 px-5 py-10 w-140">
         <Title text="유튜브에서 검색" />
         <Input
+          color="white"
           placeholder="유튜브에서 검색"
           onChange={(e) => {
             setYoutubeInput(e.target.value);
@@ -125,6 +126,7 @@ export default function SongSearch({
         <Title text="DB에서 검색" />
         <form>
           <Input
+            color="white"
             placeholder="db에서 검색"
             onChange={(e) => {
               setSongRepo(e.target.value);
@@ -143,10 +145,16 @@ export default function SongSearch({
                     className="size-14 cursor-pointer"
                     onClick={() => setPreviewId(String(v.id))}
                   />
-                  <span onClick={() => setPreviewId(String(v.id))}>
+                  <span
+                    className="w-60 wrap-break-word"
+                    onClick={() => setPreviewId(String(v.id))}
+                  >
                     {v.title}
                   </span>
-                  <span onClick={() => setPreviewId(String(v.id))}>
+                  <span
+                    className="w-25 wrap-break-word"
+                    onClick={() => setPreviewId(String(v.id))}
+                  >
                     {v.artist}
                   </span>
                   <span onClick={() => setPreviewId(String(v.id))}>

@@ -1,3 +1,5 @@
+import type { ISong } from "./song";
+
 export interface IReport {
   id: number;
   created_at: Date;
@@ -5,12 +7,6 @@ export interface IReport {
 }
 
 export interface IReportList {
-  song: {
-    id: number;
-    title: string;
-    artist: string;
-    youtubeUrl: string;
-    thumbnailUrl: string;
-  };
+  song: ISong;
   reportCount: number;
 }

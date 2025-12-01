@@ -12,3 +12,5 @@ export interface INormalizeYoutubeVideo {
   videoId: string;
   songThumbnail: string;
 }
+
+export type IUpdateSongBody = Partial<ISong> & Pick<ISong, "id">;

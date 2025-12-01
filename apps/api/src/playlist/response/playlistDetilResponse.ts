@@ -15,7 +15,7 @@ export class PlaylistDetailResponse {
     id: number;
     youtubeUrl: string;
     title: string;
-    songThumnail: string | null;
+    songThumbnail: string | null;
     artist: string;
     duration: string;
   }>;

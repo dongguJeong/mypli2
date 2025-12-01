@@ -26,6 +26,7 @@ export class AuthService {
       email: dto.email,
       passwordHash: hashed,
       username: dto.username,
+      role: 'none',
     });
     await this.users.save(user);
     return user;

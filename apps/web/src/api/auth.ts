@@ -1,4 +1,4 @@
-import type { ILogin, ILoginBody } from "../model/auth";
+import type { ILogin, ILoginBody, IUser } from "../model/auth";
 import { ServerRequester } from "../requester/server";
 
 export const Auth = {
@@ -9,7 +9,8 @@ export const Auth = {
   status: () =>
     new ServerRequester<{
       loggedIn: boolean;
-      user?: { id: number; email: string };
+      user?: IUser;
     }>("/auth/status").get(),
   logout: () => new ServerRequester("/auth/logout").get(),
+  validateAdmin: () => new ServerRequester("auth/validateAdmin").get(),
 };

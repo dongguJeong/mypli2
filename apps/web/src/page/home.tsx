@@ -18,14 +18,17 @@ export default function Home() {
 
           <IoIosArrowForward className="w-5 h-5 pb-1" />
         </a>
-        <div className="grid w-full grid-cols-3 gap-5">
+        <div className="grid w-full grid-cols-5 gap-5">
           {recommendList?.map((v) => (
             <div
               className="flex flex-col gap-3 "
               key={v.id}
               onClick={() => setCurrentPlaylist([v.song])}
             >
-              <PlaylistCard imgUrl={v.song.songThumbnail} />
+              <PlaylistCard
+                imgUrl={v.song.songThumbnail}
+                className="max-w-70 min-w-50"
+              />
               <div className="flex flex-col">
                 <span>
                   {v.song.artist} - {v.song.title}

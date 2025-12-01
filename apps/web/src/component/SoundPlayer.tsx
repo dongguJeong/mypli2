@@ -157,7 +157,7 @@ export default function SoundPlayer() {
   }
 
   return (
-    <div className="fixed bottom-0 left-0 w-screen pl-32 h-24 bg-zinc-900 border-t border-zinc-800 z-50 flex items-center px-6 gap-8">
+    <div className="fixed bottom-0 left-0 w-screen pl-32 h-24 bg-zinc-900 border-t border-zinc-800 z-50 flex items-center px-6 gap-4">
       {/* 숨겨진 YouTube 플레이어 */}
       <div className="hidden">
         <YouTube
@@ -175,11 +175,26 @@ export default function SoundPlayer() {
           alt={currentSong.title}
           className="h-16 w-20 rounded"
         />
-        <div className="flex flex-col">
-          <span className="font-semibold text-white">{currentSong.title}</span>
+        <div className="flex flex-col w-100">
+          <div className="overflow-hidden whitespace-nowrap">
+            {currentSong.title.length > 30 ? (
+              <div className="inline-block animate-marquee">
+                <span className="font-semibold text-white inline-block pr-8">
+                  {currentSong.title}
+                </span>
+                <span className="font-semibold text-white inline-block pr-8">
+                  {currentSong.title}
+                </span>
+              </div>
+            ) : (
+              <span className="font-semibold text-white">
+                {currentSong.title}
+              </span>
+            )}
+          </div>
           <span
             className={`text-sm text-gray-400 ${
-              currentSong.title.length > 30 ? "animate-marquee" : ""
+              currentSong.artist.length > 30 ? "animate-marquee" : ""
             }`}
           >
             {currentSong.artist}
@@ -188,7 +203,7 @@ export default function SoundPlayer() {
       </div>
 
       <div className="flex flex-col flex-1 gap-2">
-        <div className="flex gap-4 justify-center items-center w-160 pr-10">
+        <div className="flex gap-4 justify-center items-center w-140 pr-10">
           <Button buttonSize="sm" ghost onClick={prev}>
             <FaAngleDoubleLeft className="w-5 h-5" />
           </Button>

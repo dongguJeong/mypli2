@@ -1,3 +1,4 @@
+import { formatPMTime } from "../hook/useFormat";
 import type { ISong } from "../model/song";
 
 interface ISongList {
@@ -18,21 +19,18 @@ export default function SongList({
   return (
     <div className="w-full flex justify-between bg-[#121212] even:bg-[#1a1a1a] p-2 rounded-sm cursor-pointer">
       <div className="flex gap-5" onClick={onClick}>
-        <img
-          src={song.songThumbnail}
-          className="w-20 h-20 bg-slate-400 rounded-md"
-        />
-        <div className="flex items-center hover:underline wrap-break-word w-40">
+        <img src={song.songThumbnail} className="w-20 h-20 rounded-md" />
+        <div className="flex items-center hover:underline wrap-break-word w-100">
           <span>{song.title}</span>
         </div>
 
-        <div className="flex items-center hover:underline wrap-break-word w-40">
+        <div className="flex items-center hover:underline wrap-break-word w-60">
           <span>{song.artist}</span>
         </div>
 
         {duration && (
           <div className="flex items-center hover:underline wrap-break-word w-30">
-            <span>{song.duration}</span>
+            <span>{formatPMTime(song.duration)}</span>
           </div>
         )}
 

@@ -7,6 +7,8 @@ import Bookmark from "./page/Bookmark";
 import Myplaylist from "./page/MyPlaylist";
 import Playlist from "./page/Playlist";
 import Bulletin from "./page/Bulletin";
+import ReportPage from "./page/ReportPage";
+import ProtectedRoute from "./component/ProtectedRoute";
 
 const routeList = [
   {
@@ -33,6 +35,14 @@ const routeList = [
   {
     path: "/playlist/:id",
     element: <Playlist />,
+  },
+  {
+    path: "/admin/report",
+    element: (
+      <ProtectedRoute requireAdmin>
+        <ReportPage />
+      </ProtectedRoute>
+    ),
   },
 ];
 

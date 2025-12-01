@@ -41,7 +41,7 @@ export default function Gnb() {
           </Button>
           <a
             href="/"
-            className="text-xl text-primary font-bold w-16 flex items-center pt-1"
+            className="text-xl text-primary font-bold w-16 flex items-center pt-1 pl-5"
           >
             MYPLI
           </a>
@@ -52,24 +52,29 @@ export default function Gnb() {
             ghost
             color="white"
             placeholder="검색"
-            className="border-t-0 border-r-0 border-l-0 "
+            className="border-t-0 border-r-0 border-l-0 rounded-none"
           />
         </form>
-
-        <Button
-          color="white"
-          ghost
-          onClick={() => {
-            if (status?.loggedIn) {
-              logout.mutateAsync();
-              navigate("/");
-            } else {
-              open("login");
-            }
-          }}
-        >
-          {status?.loggedIn ? "로그아웃" : "로그인"}
-        </Button>
+        <div className="flex gap-3 items-center">
+          <div className="w-30 items-center text-center">
+            <span>{status?.user?.username}</span>
+          </div>
+          <Button
+            color="white"
+            className="w-20"
+            ghost
+            onClick={() => {
+              if (status?.loggedIn) {
+                logout.mutateAsync();
+                navigate("/");
+              } else {
+                open("login");
+              }
+            }}
+          >
+            {status?.loggedIn ? "로그아웃" : "로그인"}
+          </Button>
+        </div>
       </nav>
     </>
   );

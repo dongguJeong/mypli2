@@ -19,7 +19,7 @@ export default function MoreButton({ items }: IMoreButton) {
   return (
     <Button
       ghost
-      className="self-center relative"
+      className="self-center relative p-0"
       onClick={toggleMenu}
       buttonSize="sm"
     >

@@ -39,8 +39,9 @@ button {
   --color-primary: #9400ff;
   --color-secondary: #121212;
   --color-sidebar: #1d1d1d;
-  --color-gray: #d9d9d9;
+  --color-gray: #333333;
   --color-divider: #8e8e8e;
+  --color-white: #f1f1f1;
 
   --spacing-sidelistTop: 71px;
   --spacing-mainTop: 91px;
@@ -57,6 +58,6 @@ button {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-100%);
+    transform: translateX(-50%);
   }
 }

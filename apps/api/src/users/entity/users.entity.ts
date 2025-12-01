@@ -25,6 +25,9 @@ export class Users {
   })
   created_at: Date;
 
+  @Column({ type: 'varchar', default: 'none' })
+  role: string;
+
   @OneToMany(() => Playlist, (playlist) => playlist.owner)
   playlists: Playlist[];
 
