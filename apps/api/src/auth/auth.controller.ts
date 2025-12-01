@@ -14,6 +14,7 @@ import { AuthService } from './auth.service';
 import { SignupDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
 import { SessionGuard } from './auth.guard';
+import { CurrentUser } from './auth.current-user.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -36,11 +37,17 @@ export class AuthController {
   }
 
   @Get('status')
-  async status(@Session() session: ExpressSession) {
-    if (!session.userId) return { loggedIn: false };
-    const user = await this.authService.getUserById(+session.userId);
+  async status(@CurrentUser() userId: number) {
+    if (!userId) return { loggedIn: false };
+    const user = await this.authService.getUserById(userId);
     if (!user) return { loggedIn: false };
-    return { loggedIn: true, user: { id: user.id, email: user.email } };
+    return {
+      loggedIn: true,
+      user: {
+        username: user.username,
+        isAdmin: user.role === 'admin',
+      },
+    };
   }
 
   @Get('logout')
