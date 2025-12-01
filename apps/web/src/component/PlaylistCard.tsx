@@ -33,13 +33,13 @@ export default function PlaylistCard({
 
   return (
     <button
-      className={twMerge("rounded-sm relative", className)}
+      className={twMerge("rounded-sm relative aspect-video", className)}
       type="button"
       onMouseOver={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={clickButton}
     >
-      <img src={imgUrl} className={twMerge("w-full object-fill")} />
+      <img src={imgUrl} className={twMerge("w-full h-full object-cover")} />
       {isHovered && (
         <div className=" absolute w-full h-full backdrop-blur-sm top-0 left-0 flex justify-center items-center">
           {icon === "playSharp" ? (
