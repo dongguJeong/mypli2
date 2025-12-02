@@ -29,9 +29,7 @@ services:
     command: ["redis-server", "--requirepass", "redis_password"]
 
   api:
-    build:
-      context: ./apps/api
-      dockerfile: Dockerfile
+    image: dongguj/mypli-api:latest
     container_name: mypli-api
     restart: unless-stopped
     env_file:
@@ -39,20 +37,15 @@ services:
     environment:
       DB_HOST: db
       DB_PORT: 3306
-      # Redis도 마찬가지로 서비스 이름 사용
       REDIS_HOST: redis
       REDIS_PORT: 6379
-      REDIS_PASSWORD: redis_password # 비밀번호 쓰면 이거도
+      REDIS_PASSWORD: redis_password
     depends_on:
       - db
       - redis
-    ports:
-      - "3000:3000"
 
   web:
-    build:
-      context: ./apps/web
-      dockerfile: Dockerfile
+    image: dongguj/mypli-web:latest
     container_name: mypli-web
     restart: unless-stopped
     depends_on:
