@@ -13,7 +13,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - mypli-db-data:/var/lib/mysql
+      - /mnt/mypli-data:/var/lib/mysql
     command: >
       --default-authentication-plugin=mysql_native_password
       --character-set-server=utf8mb4
@@ -49,5 +49,11 @@ services:
     ports:
       - "3000:3000"
 
-volumes:
-  mypli-db-data:
+  web:
+    build:
+      context: ./apps/web
+      dockerfile: Dockerfile
+    container_name: mypli-web
+    restart: unless-stopped
+    ports:
+      - "80:80"

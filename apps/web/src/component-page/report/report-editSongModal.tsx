@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { ISong, IUpdateSongBody } from "../../model/song";
+import type { ISong } from "../../model/song";
 import Input from "../../component/Input";
 import Button from "../../component/Button";
 import Modal from "../../component/Modal";

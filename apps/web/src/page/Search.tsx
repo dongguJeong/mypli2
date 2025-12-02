@@ -8,8 +8,9 @@ import { formatLongText } from "../hook/useFormat";
 export default function Search() {
   const [searchParams] = useSearchParams();
   const q = searchParams.get("q");
-  const { playlistSearch } = usePlaylistSearch(q);
-  const { songRepoSearch } = useSongRepoSearch(q);
+  const { playlistSearch } = usePlaylistSearch(q!);
+  const { songRepoSearch } = useSongRepoSearch(q!);
+
   return (
     <div className="flex flex-col gap-15">
       <Title text="검색 결과" />
@@ -20,7 +21,7 @@ export default function Search() {
             className="flex gap-3 cursor-pointer"
             href={`/playlist/${v.id}`}
           >
-            <PlaylistCard imgUrl={v.thumnailUrl} />
+            <PlaylistCard imgUrl={v.thumbnailUrl} />
             <div className="flex flex-col items-center gap-5">
               <span>{v.title}</span>
               <span>{formatLongText(v.detail || "")}</span>

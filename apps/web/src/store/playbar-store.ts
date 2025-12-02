@@ -1,5 +1,5 @@
-import { Video } from "@/models/playlist.model";
 import { create } from "zustand";
+import type { ISong } from "../model/song";
 
 type PlayStatus = "play" | "pause" | "stop" | null;
 
@@ -8,8 +8,8 @@ interface StoreState {
   setCurrentVideoIndex: (value: number) => void;
   next: () => void;
   prev: () => void;
-  currentPlaylist: Video[];
-  setCurrentPlaylist: (value: Video[]) => void;
+  currentPlaylist: ISong[];
+  setCurrentPlaylist: (value: ISong[]) => void;
   playStatus: PlayStatus;
   setPlayStatus: (value: PlayStatus) => void;
 }

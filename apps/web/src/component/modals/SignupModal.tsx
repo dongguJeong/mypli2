@@ -7,6 +7,7 @@ import Input from "../Input";
 import Modal from "../Modal";
 import { useForm, type SubmitHandler } from "react-hook-form";
 import type { ISignUpBody } from "../../model/auth";
+import type { AxiosError } from "axios";
 
 export default function SignupModal() {
   const {
@@ -25,7 +26,9 @@ export default function SignupModal() {
       await Auth.signup(data);
       showAlert("회원가입 성공");
     } catch (err) {
-      const message = err.response?.data?.message;
+      const axiosError = err as AxiosError<{ message: string }>;
+      const message =
+        axiosError.response?.data?.message || "회원가입에 실패했습니다.";
 
       showAlert(message);
       if (message.includes("이미 가입된 이메일입니다.")) {

@@ -2,10 +2,9 @@ FROM node:20-alpine
 
 WORKDIR /usr/src/app
 
-# pnpm 설치 (이미 쓰고 있으면)
 RUN corepack enable
 
-# 루트 package.json / pnpm-lock.yaml 복사
+# api 폴더 안의 package.json / pnpm-lock.yaml 복사
 COPY package.json pnpm-lock.yaml ./
 
 # 의존성 설치
