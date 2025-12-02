@@ -13,7 +13,7 @@ services:
     ports:
       - "3306:3306"
     volumes:
-      - /mnt/mypli-data:/var/lib/mysql
+      - /mnt/mypli-data/mysql:/var/lib/mysql
     command: >
       --default-authentication-plugin=mysql_native_password
       --character-set-server=utf8mb4
@@ -55,5 +55,17 @@ services:
       dockerfile: Dockerfile
     container_name: mypli-web
     restart: unless-stopped
+    depends_on:
+      - api
+
+  proxy:
+    image: nginx:stable-alpine
+    container_name: mypli_proxy
+    restart: unless-stopped
     ports:
       - "80:80"
+    volumes:
+      - ./infra/nginx/conf.d:/etc/nginx/conf.d:ro
+    depends_on:
+      - web
+      - api
