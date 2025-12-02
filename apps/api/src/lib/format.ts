@@ -1,63 +1,93 @@
-export function formatIsoDurationToSeconds(iso: string): number {
-  const match = iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/);
+type ParsedTitleConfidence = 'high' | 'medium' | 'low';
 
-  if (!match) return 0;
-
-  const hours = parseInt(match[1] || '0');
-  const minutes = parseInt(match[2] || '0');
-  const seconds = parseInt(match[3] || '0');
-
-  return hours * 3600 + minutes * 60 + seconds;
+interface ParsedTitle {
+  artist: string;
+  title: string;
+  confidence: ParsedTitleConfidence;
 }
 
-export function formatYoutubeTitle(title: string) {
-  const cleaned = title
-    .replace(/\[가사\s*\|\s*Lyrics\]/gi, '')
-    .replace(/\(Color Coded Lyrics\)/gi, '')
-    .replace(/\(Official.*?\)/gi, '')
-    .replace(/\(MV\)/gi, '')
-    .replace(/\[MV\]/gi, '')
-    .replace(/Official Video/gi, '')
-    .replace(/Audio/gi, '')
-    .trim();
+const TRASH_PATTERNS: RegExp[] = [
+  /\[가사\s*\|\s*Lyrics\]/gi,
+  /\(Color Coded Lyrics?\)/gi,
+  /\(Official.*?\)/gi,
+  /\[Official.*?\]/gi,
+  /\(MV\)/gi,
+  /\[MV\]/gi,
+  /\(M\/V\)/gi,
+  /\[M\/V\]/gi,
+  /\bOfficial Video\b/gi,
+  /\bOfficial Music Video\b/gi,
+  /\bAudio\b/gi,
+  /\bLyric(s)? Video\b/gi,
+  /\bLive\b/gi,
+];
 
+function cleanYoutubeTitle(raw: string): string {
+  let cleaned = raw;
+  for (const p of TRASH_PATTERNS) {
+    cleaned = cleaned.replace(p, '');
+  }
+
+  // 연속 공백 정리
+  return cleaned.replace(/\s+/g, ' ').trim();
+}
+
+export function formatYoutubeTitle(title: string): ParsedTitle {
+  const cleaned = cleanYoutubeTitle(title);
+
+  // 패턴 1: "[MV] IU(아이유) - 좋은 날 (Good Day)" 스타일
+  // ex) "IU (아이유) - 좋은 날 (Good Day)"
   let match = cleaned.match(/^(.+?)\s*\((.+?)\)\s*[-–—]\s*(.+)$/);
-
   if (match) {
     return {
-      artist: match[2].trim(),
+      artist: match[2].trim() || match[1].trim(),
       title: match[3].trim(),
+      confidence: 'high',
     };
   }
 
-  // 패턴 2: "아티스트 (한글) '제목'"
-  match = cleaned.match(/^(.+?)\s*\((.+?)\)\s*[''](.+?)['']?$/);
+  // 패턴 2: "아티스트 (한글/영문) '제목'" or "아티스트 (한글/영문) \"제목\""
+  // ex) "BTS (방탄소년단) 'Dynamite'"
+  match = cleaned.match(/^(.+?)\s*\((.+?)\)\s*['"](.+?)['"]$/);
   if (match) {
     return {
-      artist: match[2].trim(),
+      artist: match[2].trim() || match[1].trim(),
       title: match[3].trim(),
+      confidence: 'high',
     };
   }
 
-  // 패턴 3: "아티스트 - 제목"
+  // 패턴 3: "아티스트 - 제목" / "Artist – Title"
   match = cleaned.match(/^(.+?)\s*[-–—]\s*(.+)$/);
   if (match) {
     return {
       artist: match[1].trim(),
       title: match[2].trim(),
+      confidence: 'medium',
     };
   }
 
-  // 패턴 4: "아티스트 '제목'"
-  match = cleaned.match(/^(.+?)\s*[''""](.+?)[''""]$/);
+  // 패턴 4: "아티스트 '제목'" / "Artist \"Title\""
+  match = cleaned.match(/^(.+?)\s*['"](.+?)['"]$/);
   if (match) {
     return {
       artist: match[1].trim(),
       title: match[2].trim(),
+      confidence: 'medium',
     };
   }
 
-  // 파싱 실패
+  // 패턴 5: "제목 (가수)" 반대 케이스도 가끔 있음
+  // ex) "좋은 날 (아이유)"
+  match = cleaned.match(/^(.+?)\s*\((.+?)\)$/);
+  if (match) {
+    return {
+      artist: match[2].trim(),
+      title: match[1].trim(),
+      confidence: 'low',
+    };
+  }
+
   return {
     artist: 'Unknown Artist',
     title: cleaned,
