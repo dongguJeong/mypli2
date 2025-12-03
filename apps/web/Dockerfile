@@ -10,13 +10,13 @@ RUN corepack enable
 WORKDIR /app
 
 # web 폴더 안의 package.json / pnpm-lock.yaml 사용
-COPY package.json pnpm-lock.yaml ./
+COPY apps/web/package.json apps/web/pnpm-lock.yaml ./
 
 # 의존성 설치
 RUN pnpm install --frozen-lockfile
 
 # 나머지 소스 복사
-COPY . .
+COPY apps/web .
 
 # 빌드
 RUN pnpm build
