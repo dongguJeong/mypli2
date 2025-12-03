@@ -1,8 +1,8 @@
 # -----------------------------
-# 1) Builder Stage
+# 1) Builder Stage(ARM64-friendly)
 # -----------------------------
 
-FROM node:20-alpine AS builder
+FROM node:20-bullseye-slim AS builder
 
 RUN corepack enable
 
