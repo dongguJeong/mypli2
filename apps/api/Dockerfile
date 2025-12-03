@@ -1,8 +1,11 @@
-FROM node:20-alpine
+FROM node:20-bullseye-slim
 
 WORKDIR /usr/src/app
 
-RUN apk add --no-cache python3 make g++ linux-headers
+# 빌드에 필요한 툴 설치
+RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
+
+# pnpm 활성화
 RUN corepack enable && corepack prepare pnpm@latest --activate
 
 # api 폴더 안의 package.json / pnpm-lock.yaml 복사

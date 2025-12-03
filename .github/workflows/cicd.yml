@@ -32,11 +32,10 @@ jobs:
         with:
           context: .
           file: ./apps/api/Dockerfile
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/arm64
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/mypli-api:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/mypli-api:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/mypli-api:arm64
 
       # ---------- WEB 이미지 빌드 & 푸시 ----------
       - name: Build & push WEB image
@@ -47,8 +46,7 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            ${{ secrets.DOCKERHUB_USERNAME }}/mypli-web:latest
-            ${{ secrets.DOCKERHUB_USERNAME }}/mypli-web:${{ github.sha }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/mypli-web:arm64
 
   deploy-to-raspberry:
     needs: build-and-push
