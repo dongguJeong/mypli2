@@ -32,7 +32,6 @@ jobs:
         with:
           context: .
           file: ./apps/api/Dockerfile
-          # 라즈베리파이용 ARM64 + 로컬 테스트용 AMD64 둘 다 빌드
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
