@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
-import { PlaylistModule } from './playlist/playlist.module';
+import { PlaylistModule } from './playlist/Playlist.module';
 import { Users } from './users/entity/users.entity';
 import { Playlist } from './playlist/entity/playlist.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
