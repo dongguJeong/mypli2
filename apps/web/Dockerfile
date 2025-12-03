@@ -16,7 +16,7 @@ COPY apps/web/package.json apps/web/pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
 # 나머지 소스 복사
-COPY apps/web .
+COPY apps/web ./
 
 # 빌드
 RUN pnpm build

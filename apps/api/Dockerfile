@@ -12,7 +12,7 @@ COPY apps/api/package.json apps/api/pnpm-lock.yaml ./
 RUN pnpm install --frozen-lockfile
 
 # Nest 소스 복사
-COPY apps/api .
+COPY apps/api ./
 
 # 빌드
 RUN pnpm run build
