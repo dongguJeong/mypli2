@@ -18,7 +18,7 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "migration:run:prod": "typeorm migration:run -d dist/typeorm.config.js"
+    "migration:run:prod": "typeorm migration:run -d dist/data-source.js"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -32,6 +32,7 @@
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.2",
     "connect-redis": "^9.0.0",
+    "dotenv": "^17.2.3",
     "express-session": "^1.18.2",
     "mysql2": "^3.15.3",
     "redis": "^5.10.0",
