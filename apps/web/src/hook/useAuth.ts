@@ -30,7 +30,6 @@ export function useAuth() {
     queryKey: ["auth", "status"],
     queryFn: async () => {
       const res = await Auth.status();
-      console.log(res.data);
       return res.data;
     },
     retry: false,

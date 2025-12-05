@@ -10,7 +10,7 @@ export const PlaylistSong = {
 
   addYoutubeVideo: (data: INormalizeYoutubeVideo) =>
     new ServerRequester<{ id: number; songId: number }>(
-      "playlistSong/youtubeVideo"
+      "/playlistSong/youtubeVideo"
     ).post(data),
 
   deletePlaylistSong: (data: IPlaylistSongBody) =>

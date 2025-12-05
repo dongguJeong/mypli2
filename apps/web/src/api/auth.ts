@@ -12,5 +12,5 @@ export const Auth = {
       user?: IUser;
     }>("/auth/status").get(),
   logout: () => new ServerRequester("/auth/logout").get(),
-  validateAdmin: () => new ServerRequester("auth/validateAdmin").get(),
+  validateAdmin: () => new ServerRequester("/auth/validateAdmin").get(),
 };

@@ -17,19 +17,25 @@ export class BaseRequester<Res = unknown, Body = unknown> {
     });
   }
 
-  async get(): Promise<AxiosResponse<Res>> {
-    return this.instance.get<Res>(`${this.baseURL}`);
+  protected async getRequest(path: string): Promise<AxiosResponse<Res>> {
+    return this.instance.get<Res>(path);
   }
 
-  async post(data?: Body): Promise<AxiosResponse<Res>> {
-    return this.instance.post<Res>(`${this.baseURL}`, data);
+  protected async postRequest(
+    path: string,
+    data?: Body
+  ): Promise<AxiosResponse<Res>> {
+    return this.instance.post<Res>(path, data);
   }
 
-  async patch(data?: Body): Promise<AxiosResponse<Res>> {
-    return this.instance.patch<Res>(`${this.baseURL}`, data);
+  protected async patchRequest(
+    path: string,
+    data?: Body
+  ): Promise<AxiosResponse<Res>> {
+    return this.instance.patch<Res>(path, data);
   }
 
-  async delete(): Promise<AxiosResponse<Res>> {
-    return this.instance.delete<Res>(`${this.baseURL}`);
+  protected async deleteRequest(path: string): Promise<AxiosResponse<Res>> {
+    return this.instance.delete<Res>(path);
   }
 }
