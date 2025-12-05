@@ -55,7 +55,7 @@ jobs:
     steps:
       - name: Deploy on Raspberry Pi
         run: |
-          cd ~/mypli
+          cd ~/mypli2
           git pull
           docker compose pull
           docker compose up -d
