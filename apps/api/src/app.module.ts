@@ -44,7 +44,7 @@ import { Recommend } from './recommend/entity/recommend.entity';
           Report,
           Song,
         ],
-        synchronize: true, // 개발 중에는 true (운영 시 false)
+        synchronize: config.get('NODE_ENV') !== 'production', // 개발 중에는 true (운영 시 false)
         charset: 'utf8mb4',
       }),
     }),
