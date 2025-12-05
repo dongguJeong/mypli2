@@ -6,10 +6,8 @@ import axios, {
 
 export class BaseRequester<Res = unknown, Body = unknown> {
   private instance: AxiosInstance;
-  private baseURL: string;
 
   constructor(baseURL: string, config?: AxiosRequestConfig) {
-    this.baseURL = baseURL;
     this.instance = axios.create({
       baseURL,
       withCredentials: true,
