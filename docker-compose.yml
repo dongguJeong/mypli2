@@ -29,7 +29,7 @@ services:
     command: ["redis-server", "--requirepass", "redis_password"]
 
   api:
-    image: dongguj/mypli-api:latest
+    image: dongguj/mypli-api:arm64
     container_name: mypli-api
     restart: unless-stopped
     env_file:
@@ -45,7 +45,7 @@ services:
       - redis
 
   web:
-    image: dongguj/mypli-web:latest
+    image: dongguj/mypli-web:arm64
     container_name: mypli-web
     restart: unless-stopped
     depends_on:
