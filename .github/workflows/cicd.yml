@@ -50,18 +50,12 @@ jobs:
 
   deploy-to-raspberry:
     needs: build-and-push
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
-      - name: Deploy on Raspberry Pi via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.PI_HOST }} # 라즈베리파이 IP
-          username: ${{ secrets.PI_USER }} # pi / ubuntu 등
-          key: ${{ secrets.PI_SSH_KEY }} # private key (id_rsa 내용)
-          port: ${{ secrets.PI_SSH_PORT || '22' }}
-          script: |
-            cd ~/mypli
-            git pull
-            docker compose pull
-            docker compose up -d
+      - name: Deploy on Raspberry Pi
+        run: |
+          cd ~/mypli
+          git pull
+          docker compose pull
+          docker compose up -d
