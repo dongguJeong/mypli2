@@ -51,7 +51,7 @@ export default function Sidebar() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   return (
-    <aside className="h-full pl-8 pr-4 flex flex-col  sticky top-16">
+    <aside className="h-full pl-8 pr-4 flex flex-col sticky top-0 ">
       {items.map((v) => (
         <Button
           key={v.href}
