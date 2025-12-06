@@ -192,13 +192,22 @@ export default function SoundPlayer() {
               </span>
             )}
           </div>
-          <span
-            className={`text-sm text-gray-400 ${
-              currentSong.artist.length > 30 ? "animate-marquee" : ""
-            }`}
-          >
-            {currentSong.artist}
-          </span>
+          <div className="overflow-hidden whitespace-nowrap">
+            {currentSong.title.length > 30 ? (
+              <div className="inline-block animate-marquee">
+                <span className="font-semibold text-white inline-block pr-8">
+                  {currentSong.artist}
+                </span>
+                <span className="font-semibold text-white inline-block pr-8">
+                  {currentSong.artist}
+                </span>
+              </div>
+            ) : (
+              <span className="font-semibold text-white">
+                {currentSong.artist}
+              </span>
+            )}
+          </div>
         </div>
       </div>
 

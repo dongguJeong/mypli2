@@ -29,9 +29,8 @@ export default function Playlist() {
   const {
     setCurrentPlaylist,
     setCurrentSongIndex,
-    setPlayStatus,
-    playStatus,
     currentPlaylist,
+    togglePlay,
   } = useSoundPlayerStore();
   const { deletePlaylistSong, addPlaylistSong } = usePlaylistSong();
   const { updatePlaylist } = usePlaylist();
@@ -121,8 +120,7 @@ export default function Playlist() {
                   setCurrentPlaylist(playlistDetail?.songs);
 
                 if (!currentPlaylist) return;
-                if (playStatus === "play") setPlayStatus("pause");
-                else setPlayStatus("pause");
+                togglePlay();
               }}
             >
               <FaPlay className="w-7 h-7" />
@@ -131,7 +129,7 @@ export default function Playlist() {
             <div className="flex gap-4 self-end pb-3 items-center">
               {playlistDetail?.isBookmarked ? (
                 <FaBookmark
-                  className="w-5 h-5"
+                  className="w-5 h-5 cursor-pointer"
                   onClick={() => {
                     if (!status?.loggedIn) open("login");
                     else deleteBookmark(Number(id));
@@ -139,7 +137,7 @@ export default function Playlist() {
                 />
               ) : (
                 <FaRegBookmark
-                  className="w-5 h-5"
+                  className="w-5 h-5 cursor-pointer"
                   onClick={() => {
                     if (!status?.loggedIn) open("login");
                     else bookmark(Number(id));
@@ -149,7 +147,7 @@ export default function Playlist() {
 
               {playlistDetail?.isLiked ? (
                 <BiSolidLike
-                  className="w-5 h-5"
+                  className="w-5 h-5 cursor-pointer"
                   onClick={() => {
                     if (!status?.loggedIn) open("login");
                     deleteLike(Number(id));
@@ -157,7 +155,7 @@ export default function Playlist() {
                 />
               ) : (
                 <BiLike
-                  className="w-5 h-5"
+                  className="w-5 h-5 cursor-pointer"
                   onClick={() => {
                     if (!status?.loggedIn) open("login");
                     like(Number(id));

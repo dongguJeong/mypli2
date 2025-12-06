@@ -8,7 +8,7 @@ export class ServerRequester<
   #path: string;
 
   constructor(path: string, config?: AxiosRequestConfig) {
-    super("/api", config);
+    super("http://192.168.219.105/api", config);
     this.#path = path;
   }
 

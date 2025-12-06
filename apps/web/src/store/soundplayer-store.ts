@@ -12,6 +12,7 @@ interface StoreState {
   setCurrentPlaylist: (value: ISong[]) => void;
   playStatus: PlayStatus;
   setPlayStatus: (value: PlayStatus) => void;
+  togglePlay: () => void;
 }
 
 export const useSoundPlayerStore = create<StoreState>((set) => ({
@@ -32,13 +33,11 @@ export const useSoundPlayerStore = create<StoreState>((set) => ({
     set((state) => {
       if (state.currentSongIndex === 0) {
         return {
-          currentVideoIndex: state.currentPlaylist.length - 1,
-          playStatus: "play",
+          currentSongIndex: state.currentPlaylist.length - 1,
         };
       }
       return {
-        currentVideoIndex: state.currentSongIndex - 1,
-        playStatus: "play",
+        currentSongIndex: state.currentSongIndex - 1,
       };
     }),
   togglePlay: () =>
