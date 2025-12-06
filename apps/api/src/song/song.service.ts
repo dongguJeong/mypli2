@@ -19,7 +19,6 @@ export class SongService {
   }
 
   async normalizeYoutubeVideo(dto: NormalizeYoutubeVideoDto) {
-    console.log(dto.songThumbnail);
     const videoRes = await axios.get(
       'https://www.googleapis.com/youtube/v3/videos',
       {
@@ -42,7 +41,6 @@ export class SongService {
 
     const existingSong = await this.songRepo.findOne({
       where: {
-        youtubeUrl: `https://www.youtube.com/watch?v=${dto.videoId}`,
         title: parsed.title,
         artist: parsed.artist,
       },

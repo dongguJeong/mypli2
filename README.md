@@ -26,7 +26,10 @@ YouTube 플레이리스트를 만들고 공유하는 웹 애플리케이션입�
 
 - github self-hosted runner
 - docker
+- 라즈베리파이5 우분투
 
 ### 웹 호스팅
 
-- 라즈베리파이5 우분투
+- noip (ddns 서비스)
+
+### [사용해보기](http://mypli.ddns.net)

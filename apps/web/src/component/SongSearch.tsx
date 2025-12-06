@@ -81,7 +81,7 @@ export default function SongSearch({
                 </div>
 
                 <Button
-                  color="black"
+                  color="white"
                   ghost
                   border
                   buttonSize="sm"
@@ -163,7 +163,7 @@ export default function SongSearch({
                 </div>
 
                 <Button
-                  color="black"
+                  color="white"
                   ghost
                   border
                   buttonSize="sm"

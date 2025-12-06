@@ -22,9 +22,14 @@ export default function BulletinCreateModal({
   const [description, setDescription] = useState("");
 
   if (!isOpen) return null;
+  function handleClose() {
+    setSelectedSong(null);
+    setDescription("");
+    onClose();
+  }
 
   return (
-    <Modal onClick={onClose}>
+    <Modal onClick={handleClose}>
       <div className="flex gap-5" onClick={(e) => e.stopPropagation()}>
         <SongSearch
           clickAddYoutubeVideo={(song) => setSelectedSong(song)}
@@ -66,12 +71,12 @@ export default function BulletinCreateModal({
                 if (selectedSong) {
                   onSubmit(selectedSong.id, description);
                 }
-                onClose();
+                handleClose();
               }}
             >
               등록
             </Button>
-            <Button onClick={onClose}>취소</Button>
+            <Button onClick={handleClose}>취소</Button>
           </div>
         </div>
       </div>

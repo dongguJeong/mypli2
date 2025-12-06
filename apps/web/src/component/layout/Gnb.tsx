@@ -27,7 +27,7 @@ export default function Gnb() {
     <>
       <LoginModal />
       <SignupModal />
-      <nav className="w-full h-16 items-center flex px-10 justify-between sticky top-0 py-2">
+      <nav className="w-full h-16 items-center flex px-10 justify-between sticky top-0 py-2 bg-[#181818]">
         <div className="flex gap-5 items-center">
           <Button
             ghost

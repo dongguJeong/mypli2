@@ -36,7 +36,6 @@ export class PlaylistController {
   }
 
   @Get(':playlistId')
-  @UseGuards(SessionGuard)
   getDetail(
     @Param('playlistId', ParseIntPipe) playlistId: number,
     @Session() session: ExpressSession,

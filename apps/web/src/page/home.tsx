@@ -11,23 +11,23 @@ export default function Home() {
   const { setCurrentPlaylist } = useSoundPlayerStore();
 
   return (
-    <div className="flex flex-col gap-15">
+    <div className="flex flex-col gap-10">
       <div className="flex flex-col gap-5 ">
-        <a href="/bulletin" className="flex gap-2   items-center">
+        <a href="/bulletin" className="flex gap-2 items-center">
           <Title text="추천 노래"></Title>
 
           <IoIosArrowForward className="w-5 h-5 pb-1" />
         </a>
-        <div className="grid w-full grid-cols-5 gap-5">
+        <div className="grid w-full grid-cols-3 gap-5">
           {recommendList?.map((v) => (
             <div
-              className="flex flex-col gap-3 "
+              className="flex flex-col gap-3 w-full"
               key={v.id}
               onClick={() => setCurrentPlaylist([v.song])}
             >
               <PlaylistCard
                 imgUrl={v.song.songThumbnail}
-                className="max-w-70 min-w-50"
+                className="w-full max-h-60"
               />
               <div className="flex flex-col">
                 <span>
