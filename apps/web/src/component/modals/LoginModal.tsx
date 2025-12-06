@@ -64,7 +64,7 @@ export default function LoginModal() {
               type="email"
               inputSize="lg"
               error={!!errors.email}
-              placeholder="이메일"
+              placeholder="test@test.com"
               {...register("email", { required: true })}
             />
 
@@ -73,7 +73,7 @@ export default function LoginModal() {
               inputSize="lg"
               className="rounded-sm"
               error={!!errors.password}
-              placeholder="비밀번호"
+              placeholder="test"
               {...register("password", { required: true, minLength: 4 })}
             />
 

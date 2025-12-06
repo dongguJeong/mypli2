@@ -8,7 +8,10 @@ export class ServerRequester<
   #path: string;
 
   constructor(path: string, config?: AxiosRequestConfig) {
-    super("/api", config);
+    super(import.meta.env.VITE_API_URL ?? "/api", {
+      withCredentials: true,
+      ...config,
+    });
     this.#path = path;
   }
 
