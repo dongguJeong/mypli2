@@ -12,7 +12,10 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 COPY apps/api/package.json apps/api/pnpm-lock.yaml ./
 
 # 의존성 설치
-RUN pnpm install --frozen-lockfile
+# 의존성 설치 (pnpm store를 캐시로 사용)
+RUN --mount=type=cache,id=pnpm-store,target=/root/.local/share/pnpm/store \
+    pnpm install --frozen-lockfile
+
 
 # Nest 소스 복사
 COPY apps/api ./

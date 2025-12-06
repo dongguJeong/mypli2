@@ -13,7 +13,8 @@ WORKDIR /app
 COPY apps/web/package.json apps/web/pnpm-lock.yaml ./
 
 # 의존성 설치
-RUN pnpm install --frozen-lockfile
+RUN --mount=type=cache,id=pnpm-store,target=/root/.local/share/pnpm/store \
+    pnpm install --frozen-lockfile
 
 # 나머지 소스 복사
 COPY apps/web ./

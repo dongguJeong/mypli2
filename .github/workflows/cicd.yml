@@ -36,6 +36,8 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/mypli-api:arm64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       # ---------- WEB 이미지 빌드 & 푸시 ----------
       - name: Build & push WEB image
@@ -47,6 +49,8 @@ jobs:
           push: true
           tags: |
             ${{ secrets.DOCKERHUB_USERNAME }}/mypli-web:arm64
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
   deploy-to-raspberry:
     needs: build-and-push
@@ -58,4 +62,6 @@ jobs:
           cd ~/mypli2
           git pull
           docker compose pull
+          docker compose up -d db redis
+          docker compose run --rm api npm run migration:run:prod
           docker compose up -d
