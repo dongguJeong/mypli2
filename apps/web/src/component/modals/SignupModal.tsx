@@ -19,7 +19,7 @@ export default function SignupModal() {
 
   const { showAlert } = useAlert();
 
-  const { open, currentModal } = useModalStore();
+  const { open, currentModal, close } = useModalStore();
   if (currentModal !== "signup") return;
   const onSubmit: SubmitHandler<ISignUpBody> = async (data) => {
     try {

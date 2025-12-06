@@ -1,13 +1,16 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Playlist } from "../api/playlist";
 import type { IUpdatePlaylist } from "../model/playlist";
+import { useAuth } from "./useAuth";
 
 export function usePlaylist() {
+  const { status } = useAuth();
   const queryClient = useQueryClient();
 
   const { data: myPlaylist } = useQuery({
     queryKey: ["playlists"],
     queryFn: async () => (await Playlist.myplaylist()).data,
+    enabled: status?.loggedIn,
   });
 
   const { mutateAsync: createPlaylist } = useMutation({
