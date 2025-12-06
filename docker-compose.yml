@@ -33,7 +33,7 @@ services:
     container_name: mypli-api
     restart: unless-stopped
     env_file:
-      - ./apps/api/.env
+      - ./apps/api/.env.prod
     environment:
       NODE_ENV: production
     depends_on:
