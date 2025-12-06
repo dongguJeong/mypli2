@@ -58,8 +58,4 @@ jobs:
           cd ~/mypli2
           git pull
           docker compose pull
-          docker compose up -d db 
-
-          docker compose run --rm api npm run migration:run:prod
-
           docker compose up -d
