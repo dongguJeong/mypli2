@@ -35,25 +35,27 @@ export default function BulletinCreateModal({
           clickAddYoutubeVideo={(song) => setSelectedSong(song)}
           clickAddSong={(song) => setSelectedSong(song)}
         />
-        <div className="flex flex-col w-80 h-full px-5 py-10 gap-5">
+        <div className="flex flex-col w-60 h-full px-5 py-10 gap-5">
           <Title text="추천 이유" />
 
           <li className="w-full h-10 flex  items-center justify-between">
             <div className="flex gap-5 items-center ">
               <img src={selectedSong?.songThumbnail} className="size-5" />
               <span>
-                {formatLongText(selectedSong?.title ?? "노래를 선택해주세요")}
+                {formatLongText(selectedSong?.title ?? "선택된 노래", 10)}
               </span>
               <span>{selectedSong?.artist}</span>
             </div>
-            <button
-              type="button"
-              onClick={() => {
-                setSelectedSong(null);
-              }}
-            >
-              <RxCross2 className="w-5 h-5" />
-            </button>
+            {selectedSong && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedSong(null);
+                }}
+              >
+                <RxCross2 className="w-5 h-5" />
+              </button>
+            )}
           </li>
           <textarea
             name="description"

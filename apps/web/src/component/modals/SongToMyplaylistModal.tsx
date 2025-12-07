@@ -44,10 +44,7 @@ export default function SongToMyplaylistModal({
   return (
     <>
       {openCreatePlaylistModal && (
-        <Modal
-          className="z-9999"
-          onClick={() => setOpenCreatePlaylistModal(false)}
-        >
+        <Modal onClick={() => setOpenCreatePlaylistModal(false)}>
           <div className="flex flex-col gap-3 w-80 ">
             <Title text="새 재생목록"></Title>
             <Input

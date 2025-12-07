@@ -29,8 +29,8 @@ export default function Bulletin() {
     open: boolean;
     songId: number | null;
   }>({ open: false, songId: null });
-  const [openEditRecommend, setOpenEditRecommend] = useState(false);
-  const [openCreateRecommend, setOpenCreateRecommend] = useState(false);
+  const [openEditRecommend, setOpenEditRecommend] = useState(true);
+  const [openCreateRecommend, setOpenCreateRecommend] = useState(true);
   const [editingRecommend, setEditingRecommend] = useState<{
     recommendId: number;
     description: string;
