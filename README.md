@@ -24,7 +24,7 @@ YouTube 플레이리스트를 만들고 공유하는 웹 애플리케이션입�
 
 ### 배포
 
-- github self-hosted runner
+-
 - docker
 - 라즈베리파이5 우분투
 

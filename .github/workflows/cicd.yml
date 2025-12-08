@@ -53,15 +53,22 @@ jobs:
           cache-to: type=gha,mode=max
 
   deploy-to-raspberry:
-    needs: build-and-push
-    runs-on: self-hosted
+    needs: build-and-push # 이미지 빌드/푸시가 끝난 후 실행
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy on Raspberry Pi
+      - name: Setup SSH key
         run: |
-          cd ~/mypli2
-          git pull
-          docker compose pull
-          docker compose up -d db redis
-          docker compose run --rm api npm run migration:run:prod
-          docker compose up -d
+          mkdir -p ~/.ssh
+          echo "${{ secrets.PI_SSH_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          # known_hosts 검사 끄기 (초기 세팅 편하게)
+          echo "Host mypli" >> ~/.ssh/config
+          echo "  HostName ${{ secrets.RASBERRY_PI_HOST }}" >> ~/.ssh/config
+          echo "  User ${{ secrets.RASPBERRY_PI_USER}}" >> ~/.ssh/config
+          echo "  Port ${{ secrets.RASPBERRY_PI_PORT}}" >> ~/.ssh/config
+          echo "  StrictHostKeyChecking no" >> ~/.ssh/config
+
+      - name: Deploy on Raspberry Pi via SSH
+        run: |
+          ssh mypli "/home/donggu/mypli2/deploy.sh"
