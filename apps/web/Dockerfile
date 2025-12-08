@@ -30,7 +30,7 @@ RUN pnpm build
 FROM nginx:alpine
 
 # 우리가 만든 SPA용 설정으로 default.conf 덮어쓰기
-COPY infra/nginx/conf.d/web.conf /etc/nginx/conf.d/default.conf
+COPY infra/nginx/web-conf/web.conf /etc/nginx/conf.d/default.conf
 
 COPY --from=builder /app/dist /usr/share/nginx/html
 EXPOSE 80
