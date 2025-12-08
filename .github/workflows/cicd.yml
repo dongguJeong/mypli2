@@ -62,7 +62,6 @@ jobs:
           mkdir -p ~/.ssh
           echo "${{ secrets.PI_SSH_KEY }}" > ~/.ssh/id_ed25519
           chmod 600 ~/.ssh/id_ed25519
-          # known_hosts 검사 끄기 (초기 세팅 편하게)
           echo "Host mypli" >> ~/.ssh/config
           echo "  HostName ${{ secrets.RASBERRY_PI_HOST }}" >> ~/.ssh/config
           echo "  User ${{ secrets.RASPBERRY_PI_USER}}" >> ~/.ssh/config
