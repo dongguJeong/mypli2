@@ -75,7 +75,7 @@ export function useBookmark() {
     },
   });
 
-  const { data: bookmarkList } = useQuery({
+  const { data: bookmarkList, isLoading: bookmarkLoading } = useQuery({
     queryFn: async () => {
       const response = await Bookmark.list();
       return response.data;
@@ -83,5 +83,5 @@ export function useBookmark() {
     queryKey: ["bookmarks"],
   });
 
-  return { bookmark, deleteBookmark, bookmarkList };
+  return { bookmark, deleteBookmark, bookmarkList, bookmarkLoading };
 }

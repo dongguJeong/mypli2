@@ -6,8 +6,8 @@ import { IoIosArrowForward } from "react-icons/io";
 import { useSoundPlayerStore } from "../store/soundplayer-store";
 
 export default function Home() {
-  const { mostLiked } = usePlaylist();
-  const { recommendList } = useRecommendList(3);
+  const { mostLiked, mostLikedLoading } = usePlaylist();
+  const { recommendList, recommendListLoading } = useRecommendList(3);
   const { setCurrentPlaylist } = useSoundPlayerStore();
 
   return (
@@ -19,39 +19,53 @@ export default function Home() {
           <IoIosArrowForward className="w-5 h-5 pb-1" />
         </a>
         <div className="grid w-full grid-cols-3 gap-5">
-          {recommendList?.map((v) => (
-            <div
-              className="flex flex-col gap-3 w-full"
-              key={v.id}
-              onClick={() => setCurrentPlaylist([v.song])}
-            >
-              <PlaylistCard
-                imgUrl={v.song.songThumbnail}
-                className="w-full max-h-60"
-              />
-              <div className="flex flex-col">
-                <span>
-                  {v.song.artist} - {v.song.title}
-                </span>
-              </div>
-            </div>
-          ))}
+          {recommendListLoading
+            ? Array(3).map((_, idx) => (
+                <div
+                  key={idx}
+                  className="rounded-sm relative aspect-video animate-pulse bg-gray-200"
+                ></div>
+              ))
+            : recommendList?.map((v) => (
+                <div
+                  className="flex flex-col gap-3 w-full"
+                  key={v.id}
+                  onClick={() => setCurrentPlaylist([v.song])}
+                >
+                  <PlaylistCard
+                    imgUrl={v.song.songThumbnail}
+                    className="w-full max-h-60"
+                  />
+                  <div className="flex flex-col">
+                    <span>
+                      {v.song.artist} - {v.song.title}
+                    </span>
+                  </div>
+                </div>
+              ))}
         </div>
       </div>
 
       <div className="flex flex-col gap-5 ">
         <Title text="인기 플레이리스트" />
         <div className="grid w-full grid-cols-5 gap-5">
-          {mostLiked?.map((v) => (
-            <a
-              href={`/playlist/${v.id}`}
-              className="flex flex-col gap-3 rounded-sm w-full"
-              key={v.id}
-            >
-              <PlaylistCard imgUrl={v.thumbnailUrl} />
-              <span className="text-lg">{v.title}</span>
-            </a>
-          ))}
+          {mostLikedLoading
+            ? Array(5).map((_, idx) => (
+                <div
+                  key={idx}
+                  className="rounded-sm relative aspect-video animate-pulse bg-gray-200"
+                ></div>
+              ))
+            : mostLiked?.map((v) => (
+                <a
+                  href={`/playlist/${v.id}`}
+                  className="flex flex-col gap-3 rounded-sm w-full"
+                  key={v.id}
+                >
+                  <PlaylistCard imgUrl={v.thumbnailUrl} />
+                  <span className="text-lg">{v.title}</span>
+                </a>
+              ))}
         </div>
       </div>
     </div>

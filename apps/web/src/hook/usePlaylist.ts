@@ -39,7 +39,7 @@ export function usePlaylist() {
     queryFn: async () => (await Playlist.newest()).data,
   });
 
-  const { data: mostLiked } = useQuery({
+  const { data: mostLiked, isLoading: mostLikedLoading } = useQuery({
     queryKey: ["mostLiked"],
     queryFn: async () => (await Playlist.mostLiked()).data,
   });
@@ -51,5 +51,6 @@ export function usePlaylist() {
     deletePlaylist,
     newest,
     mostLiked,
+    mostLikedLoading,
   };
 }

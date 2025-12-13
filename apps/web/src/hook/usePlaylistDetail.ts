@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Playlist } from "../api/playlist";
 
 export function usePlaylistDetail(playlistId: number) {
-  const { data: playlistDetail } = useQuery({
+  const { data: playlistDetail, isLoading: playlistDetailLoading } = useQuery({
     queryKey: ["playlist", playlistId],
     queryFn: async () => (await Playlist.detail(playlistId)).data,
     enabled: !!playlistId,
@@ -10,5 +10,6 @@ export function usePlaylistDetail(playlistId: number) {
 
   return {
     playlistDetail,
+    playlistDetailLoading,
   };
 }

@@ -38,10 +38,10 @@ export function useRecommend() {
 }
 
 export function useRecommendList(limit?: number) {
-  const { data: recommendList } = useQuery({
+  const { data: recommendList, isLoading: recommendListLoading } = useQuery({
     queryKey: ["recommend", limit],
     queryFn: async () => (await Recommend.recommendList(limit)).data,
   });
 
-  return { recommendList };
+  return { recommendList, recommendListLoading };
 }
