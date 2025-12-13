@@ -1,5 +1,3 @@
-version: "3.9"
-
 services:
   db:
     image: mysql:8.0
@@ -10,6 +8,11 @@ services:
       MYSQL_DATABASE: mypli
       MYSQL_USER: mypli_user
       MYSQL_PASSWORD: mypli_pass
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     ports:
       - "3306:3306"
     volumes:
@@ -37,8 +40,10 @@ services:
     environment:
       NODE_ENV: production
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_started
 
   web:
     image: dongguj/mypli-web:arm64
