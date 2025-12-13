@@ -1,6 +1,6 @@
 # 🎧 MyPli
 
-[배포 사이트](http://mypli.ddns.net:7777)
+[배포 사이트](https://mypli.ddns.net:7777)
 
 - 테스트 메일: `test@test.com`
 - 테스트 비밀번호: `test`
