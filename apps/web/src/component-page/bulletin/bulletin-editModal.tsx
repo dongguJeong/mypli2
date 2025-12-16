@@ -27,10 +27,7 @@ export default function BulletinEditModal({
   }
 
   function handleSubmit() {
-    console.log(description);
     onSubmit(recommendId, description);
-
-    // handleClose();
   }
 
   if (!isOpen) return null;

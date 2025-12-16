@@ -26,7 +26,6 @@ export class RecommendController {
     @Body() dto: CreateRecommendDto,
     @CurrentUser() userId: number,
   ) {
-    console.log(dto);
     return this.recommendService.createRecommend(dto, userId);
   }
 

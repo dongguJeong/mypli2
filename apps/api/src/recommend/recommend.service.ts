@@ -16,7 +16,6 @@ export class RecommendService {
   ) {}
 
   async createRecommend(dto: CreateRecommendDto, userId: number) {
-    console.log(dto);
     const recommend = this.recommendRepo.create({
       user: { id: userId },
       song: { id: dto.songId },

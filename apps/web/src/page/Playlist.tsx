@@ -20,6 +20,7 @@ import SongSearch from "../component/SongSearch";
 import type { ISong } from "../model/song";
 import { useReport } from "../hook/useReport";
 import SongList from "../component/Songlist";
+import SongToMyplaylistModal from "../component/modals/SongToMyplaylistModal";
 
 export default function Playlist() {
   const { open } = useModalStore();
@@ -40,6 +41,10 @@ export default function Playlist() {
 
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openSongSearch, setOpenSongSearch] = useState(false);
+  const [openSongToPlaylist, setOpenSongToPlaylist] = useState<{
+    open: boolean;
+    songId: number | null;
+  }>({ open: false, songId: null });
 
   function handleSubmit(
     playlistId: number,
@@ -66,8 +71,26 @@ export default function Playlist() {
     });
   }
 
+  function handleAddSongToPlaylist(songId: number, playlistId: number) {
+    addPlaylistSong({ songId, playlistId });
+  }
+
   return (
     <>
+      {openSongToPlaylist.open && openSongToPlaylist.songId && (
+        <SongToMyplaylistModal
+          isOpen={openSongToPlaylist.open}
+          onClose={() => {
+            setOpenSongToPlaylist({
+              open: false,
+              songId: null,
+            });
+          }}
+          songId={openSongToPlaylist.songId}
+          addSongToPlaylist={handleAddSongToPlaylist}
+        />
+      )}
+
       {playlistDetail && (
         <MyplaylistEditModal
           isOpen={openEditModal}
@@ -215,8 +238,12 @@ export default function Playlist() {
                             ]
                           : [
                               {
-                                text: "내 플레이리스트에 추가는 언제 만드냐",
-                                onClick: () => console.log("추가 예정"),
+                                text: "내 플레이리스트에 추가",
+                                onClick: () =>
+                                  setOpenSongToPlaylist({
+                                    open: true,
+                                    songId: v.id,
+                                  }),
                               },
                               {
                                 text: "노래 신고",
