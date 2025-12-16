@@ -57,7 +57,8 @@ services:
     container_name: mypli_proxy
     restart: unless-stopped
     ports:
-      - "7777:443"
+      - "443:443"
+      - "80:80"
     volumes:
       - ./infra/nginx/conf.d:/etc/nginx/conf.d:ro
       - /etc/letsencrypt:/etc/letsencrypt:ro
