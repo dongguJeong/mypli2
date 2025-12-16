@@ -1,37 +1,50 @@
 # -----------------------------
-# 1) Builder Stage(ARM64-friendly)
+# 1) Dependencies Stage
 # -----------------------------
+FROM node:20-bullseye-slim AS deps
 
+WORKDIR /app
 
+# pnpm 활성화
+RUN corepack enable && corepack prepare pnpm@latest --activate
+
+# package.json과 lock 파일만 먼저 복사 (캐시 최적화)
+COPY apps/web/package.json apps/web/pnpm-lock.yaml ./
+
+# 의존성 설치 (lock 파일 변경시에만 재실행)
+RUN --mount=type=cache,id=pnpm-store-web,target=/root/.local/share/pnpm/store \
+    pnpm install --frozen-lockfile
+
+# -----------------------------
+# 2) Builder Stage
+# -----------------------------
 FROM node:20-bullseye-slim AS builder
+
+WORKDIR /app
 
 RUN corepack enable
 
-# 작업 디렉토리 설정 (중요!)
-WORKDIR /app
+# deps 스테이지에서 node_modules 복사
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/package.json ./
 
-# web 폴더 안의 package.json / pnpm-lock.yaml 사용
-COPY apps/web/package.json apps/web/pnpm-lock.yaml ./
-
-# 의존성 설치
-RUN --mount=type=cache,id=pnpm-store,target=/root/.local/share/pnpm/store \
-    pnpm install --frozen-lockfile
-
-# 나머지 소스 복사
+# 소스 코드 복사
 COPY apps/web ./
 
 # 빌드
 RUN pnpm build
 
 # -----------------------------
-# 2) Nginx Runtime Stage
+# 3) Nginx Runtime Stage
 # -----------------------------
-FROM nginx:alpine
+FROM nginx:alpine AS runner
 
 # 우리가 만든 SPA용 설정으로 default.conf 덮어쓰기
 COPY infra/nginx/web-conf/web.conf /etc/nginx/conf.d/default.conf
 
+# 빌드된 정적 파일만 복사
 COPY --from=builder /app/dist /usr/share/nginx/html
+
 EXPOSE 80
 
 CMD ["nginx", "-g", "daemon off;"]

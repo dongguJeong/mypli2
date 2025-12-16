@@ -1,57 +1,54 @@
-# -----------------------------
-# 1️⃣ Base (pnpm + build tools 캐시)
-# -----------------------------
-FROM node:20-bullseye-slim AS base
+FROM node:20-bullseye-slim AS deps
 
 WORKDIR /usr/src/app
 
-# 빌드에 필요한 툴 (거의 안 바뀜 → 캐시됨)
-RUN apt-get update && \
-    apt-get install -y python3 make g++ && \
-    rm -rf /var/lib/apt/lists/*
+# 빌드에 필요한 툴 설치
+RUN apt-get update && apt-get install -y python3 make g++ && rm -rf /var/lib/apt/lists/*
 
-# pnpm (버전 고정 권장)
-RUN corepack enable && corepack prepare pnpm@9.12.0 --activate
+# pnpm 활성화
+RUN corepack enable && corepack prepare pnpm@latest --activate
 
-
-# -----------------------------
-# 2️⃣ deps (의존성 캐시)
-# -----------------------------
-FROM base AS deps
-
-# package.json / lockfile만 복사 (여기가 캐시 핵심)
+# package.json과 lock 파일만 먼저 복사 (캐시 최적화)
 COPY apps/api/package.json apps/api/pnpm-lock.yaml ./
 
-# pnpm store 캐시
+# 의존성 설치 (lock 파일 변경시에만 재실행)
 RUN --mount=type=cache,id=pnpm-store,target=/root/.local/share/pnpm/store \
     pnpm install --frozen-lockfile
 
-
-# -----------------------------
-# 3️⃣ build (소스 변경 시만 다시 빌드)
-# -----------------------------
-FROM base AS build
-
-# node_modules 재사용
-COPY --from=deps /usr/src/app/node_modules ./node_modules
-
-# 소스 복사 (자주 바뀜)
-COPY apps/api ./
-
-# Nest build
-RUN pnpm run build
-
-
-# -----------------------------
-# 4️⃣ runtime (가볍게)
-# -----------------------------
-FROM node:20-bullseye-slim AS runtime
+# 빌드 스테이지
+FROM node:20-bullseye-slim AS builder
 
 WORKDIR /usr/src/app
 
-# 런타임에 필요한 것만
-COPY --from=build /usr/src/app/dist ./dist
-COPY --from=build /usr/src/app/node_modules ./node_modules
-COPY apps/api/package.json ./
+RUN corepack enable
+
+# deps 스테이지에서 node_modules 복사
+COPY --from=deps /usr/src/app/node_modules ./node_modules
+COPY --from=deps /usr/src/app/package.json ./
+
+# 소스 코드 복사
+COPY apps/api ./
+
+# 빌드
+RUN pnpm run build
+
+# 프로덕션 스테이지
+FROM node:20-bullseye-slim AS runner
+
+WORKDIR /usr/src/app
+
+ENV NODE_ENV=production
+
+RUN corepack enable
+
+# 필요한 파일만 복사 (최소 이미지 크기)
+COPY --from=builder /usr/src/app/dist ./dist
+COPY --from=builder /usr/src/app/node_modules ./node_modules
+COPY --from=builder /usr/src/app/package.json ./
+
+# 프로덕션 의존성만 재설치 (선택사항)
+# RUN pnpm prune --prod
+
+EXPOSE 3000
 
 CMD ["node", "dist/main.js"]
