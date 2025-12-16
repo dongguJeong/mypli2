@@ -9,6 +9,7 @@ export default function Home() {
   const { mostLiked, mostLikedLoading } = usePlaylist();
   const { recommendList, recommendListLoading } = useRecommendList(3);
   const { setCurrentPlaylist } = useSoundPlayerStore();
+  console.log("cicd 캐싱 테스트 1");
 
   return (
     <div className="flex flex-col gap-10">
