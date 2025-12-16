@@ -11,9 +11,9 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 # package.json과 lock 파일만 먼저 복사 (캐시 최적화)
 COPY apps/api/package.json apps/api/pnpm-lock.yaml ./
 
-# 의존성 설치 (lock 파일 변경시에만 재실행)
-RUN --mount=type=cache,id=pnpm-store,target=/root/.local/share/pnpm/store \
-    pnpm install --frozen-lockfile
+#Docker 레이어 캐시 활용
+RUN pnpm install --frozen-lockfile
+
 
 # 빌드 스테이지
 FROM node:20-bullseye-slim AS builder

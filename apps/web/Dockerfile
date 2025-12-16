@@ -12,8 +12,7 @@ RUN corepack enable && corepack prepare pnpm@latest --activate
 COPY apps/web/package.json apps/web/pnpm-lock.yaml ./
 
 # 의존성 설치 (lock 파일 변경시에만 재실행)
-RUN --mount=type=cache,id=pnpm-store-web,target=/root/.local/share/pnpm/store \
-    pnpm install --frozen-lockfile
+RUN pnpm install --frozen-lockfile
 
 # -----------------------------
 # 2) Builder Stage
